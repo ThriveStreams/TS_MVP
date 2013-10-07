@@ -169,8 +169,17 @@
     thriveItems = @[@"Meditation", @"Journal", @"Excercise", @"Nutrition"];
     
     // set up navigationbar
-    self.navigationController.navigationBar.topItem.title = @"ThriveStreams";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@". . ." style:UIBarButtonItemStylePlain target:self action:@selector(showOverlay)];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorWithWhite:0.6 alpha:0.9]];
+    UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 260, 20)];
+    [logo setImage:[UIImage imageNamed:@"TS_Logo_BPLAN.png"]];
+    [logo setContentMode:UIViewContentModeScaleAspectFit];
+    self.navigationItem.titleView = logo;
+    
+    NSLog(@"CRECT: %f, %f, %f, %f", logo.frame.origin.x, logo.frame.origin.y, logo.frame.size.height, logo.frame.size.width);
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"3dotButton.png"] style:UIBarStyleDefault target:self action:@selector(showOverlay)];
+    
+   // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@". . ." style:UIBarButtonItemStylePlain target:self action:@selector(showOverlay)];
     
     [self populateGoals];
 }
@@ -382,7 +391,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    NSLog(@"went here: number of sections");
     return 1;
 }
 

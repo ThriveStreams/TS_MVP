@@ -53,29 +53,58 @@
     // Set up colors
     //   NSString *fontName = @"OpenSans-Light";
     UIColor *greyColor = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:166.0/255 alpha:1.0f];
-    UIColor *navigationBarColor = [UIColor colorWithRed:189.0/255 green:195.0/255 blue:199.0/255 alpha:1.0];
+ //   UIColor *navigationBarColor = [UIColor colorWithRed:189.0/255 green:195.0/255 blue:199.0/255 alpha:1.0];
     
     // setup the background color for the view
     [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
 
     // Configure the navigation bar to a flat grey design and other stuff
-    [self.navigationController.navigationBar setBackgroundImage:[FlatUIHelper imageWithColor:navigationBarColor cornerRadius:0] forBarMetrics:0];
+  //  [self.navigationController.navigationBar setBackgroundImage:[FlatUIHelper imageWithColor:navigationBarColor cornerRadius:0] forBarMetrics:0];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0]];
     
     self.navigationController.navigationBar.topItem.title = @"Login";
     
+    NSDictionary* navBarDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.4 alpha:1.0], UITextAttributeTextColor,
+                                      [UIColor clearColor], UITextAttributeTextShadowColor,
+                                      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+                                      [UIFont fontWithName:@"OpenSans-Light" size:26.0], UITextAttributeFont, nil];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:navBarDictionary];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Let's Do It!"
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(loginUser:)];
+
+    NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
+                                             [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
+                                             [UIFont fontWithName:@"OpenSans-Light" size:24.0], UITextAttributeFont,
+                                             nil];
+    NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
+                                              [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+                                              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
+                                              [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                              nil];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
     
-    [FlatUIHelper configureItemOrProxy:self.navigationItem.rightBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
+  //  [FlatUIHelper configureItemOrProxy:self.navigationItem.rightBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancel:)];
-    [FlatUIHelper configureItemOrProxy:self.navigationItem.leftBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
+    
+    NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
+     [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+     [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+     [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+     nil];
+    
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
+    
+  // [FlatUIHelper configureItemOrProxy:self.navigationItem.leftBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
     
     [self enableLoginButton];
     

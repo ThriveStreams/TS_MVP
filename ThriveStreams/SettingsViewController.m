@@ -102,15 +102,45 @@
     // set up navigation Bar
     self.navigationController.navigationBar.topItem.title = @"Settings";
     
+    NSDictionary* navBarDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.4 alpha:1.0], UITextAttributeTextColor,
+                                      [UIColor clearColor], UITextAttributeTextShadowColor,
+                                      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+                                      [UIFont fontWithName:@"OpenSans-Light" size:26.0], UITextAttributeFont, nil];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:navBarDictionary];
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0]];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Let's Do It!"
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(done:)];
+    
+    NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
+                                                      [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+                                                      [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
+                                                      [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                                      nil];
+    NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
+                                                    [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+                                                    [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
+                                                    [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                                    nil];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancel:)];
+    
+    NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
+                                             [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
+                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+                                             [UIFont fontWithName:@"OpenSans-Light" size:24.0], UITextAttributeFont,
+                                             nil];
+    
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
     
     //initialize tap gesture to remove keyboard
     tapOutsideKeyboard = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapRemoveKeyboard:)];

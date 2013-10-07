@@ -22,6 +22,17 @@
 		6E171BA81802A1FA005926DF /* JournalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BA31802A1FA005926DF /* JournalIcon.png */; };
 		6E171BA91802A1FA005926DF /* MeditationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BA41802A1FA005926DF /* MeditationIcon.png */; };
 		6E171BAA1802A1FA005926DF /* NutritionIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BA51802A1FA005926DF /* NutritionIcon.png */; };
+		6E171BB71802B489005926DF /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BAC1802B489005926DF /* OpenSans-ExtraBoldItalic.ttf */; };
+		6E171BB81802B489005926DF /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BAD1802B489005926DF /* OpenSans-Regular.ttf */; };
+		6E171BB91802B489005926DF /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BAE1802B489005926DF /* Lato-Black.ttf */; };
+		6E171BBA1802B489005926DF /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BAF1802B489005926DF /* OpenSans-Bold.ttf */; };
+		6E171BBB1802B489005926DF /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB01802B489005926DF /* OpenSans-BoldItalic.ttf */; };
+		6E171BBC1802B489005926DF /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB11802B489005926DF /* OpenSans-ExtraBold.ttf */; };
+		6E171BBD1802B489005926DF /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB21802B489005926DF /* OpenSans-Italic.ttf */; };
+		6E171BBE1802B489005926DF /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB31802B489005926DF /* OpenSans-Light.ttf */; };
+		6E171BBF1802B489005926DF /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB41802B489005926DF /* OpenSans-LightItalic.ttf */; };
+		6E171BC01802B489005926DF /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */; };
+		6E171BC11802B489005926DF /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */; };
 		6E6987FB1801E08100216E61 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987F91801E08100216E61 /* 37x-Checkmark.png */; };
 		6E6987FC1801E08100216E61 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */; };
 		6E6DA72E17FEA650001E9D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6DA72D17FEA650001E9D66 /* Foundation.framework */; };
@@ -38,6 +49,9 @@
 		6E6DA75217FEA650001E9D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6DA73117FEA650001E9D66 /* UIKit.framework */; };
 		6E6DA75A17FEA650001E9D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E6DA75817FEA650001E9D66 /* InfoPlist.strings */; };
 		6E6DA75C17FEA650001E9D66 /* ThriveStreamsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6DA75B17FEA650001E9D66 /* ThriveStreamsTests.m */; };
+		6E7E19BA1802C42100D7B49C /* TS_Logo_BPLAN2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */; };
+		6E7E19C71802C8BE00D7B49C /* 3dotButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19C51802C8BE00D7B49C /* 3dotButton@2x.png */; };
+		6E7E19C81802C8BE00D7B49C /* 3dotButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19C61802C8BE00D7B49C /* 3dotButton.png */; };
 		6ED72A441801017A003B5ED5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED72A431801017A003B5ED5 /* User.m */; };
 		6ED72A471801017A003B5ED5 /* Goal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED72A461801017A003B5ED5 /* Goal.m */; };
 		6EE002A617FF75C800B804CD /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EE0028717FF75C800B804CD /* checkmark.png */; };
@@ -133,6 +147,17 @@
 		6E171BA31802A1FA005926DF /* JournalIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JournalIcon.png; sourceTree = "<group>"; };
 		6E171BA41802A1FA005926DF /* MeditationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MeditationIcon.png; sourceTree = "<group>"; };
 		6E171BA51802A1FA005926DF /* NutritionIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NutritionIcon.png; sourceTree = "<group>"; };
+		6E171BAC1802B489005926DF /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		6E171BAD1802B489005926DF /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		6E171BAE1802B489005926DF /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		6E171BAF1802B489005926DF /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		6E171BB01802B489005926DF /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		6E171BB11802B489005926DF /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		6E171BB21802B489005926DF /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		6E171BB31802B489005926DF /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		6E171BB41802B489005926DF /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
 		6E6987F91801E08100216E61 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		6E6DA72A17FEA650001E9D66 /* ThriveStreams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThriveStreams.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +178,9 @@
 		6E6DA75717FEA650001E9D66 /* ThriveStreamsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ThriveStreamsTests-Info.plist"; sourceTree = "<group>"; };
 		6E6DA75917FEA650001E9D66 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6E6DA75B17FEA650001E9D66 /* ThriveStreamsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThriveStreamsTests.m; sourceTree = "<group>"; };
+		6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TS_Logo_BPLAN2.png; sourceTree = "<group>"; };
+		6E7E19C51802C8BE00D7B49C /* 3dotButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3dotButton@2x.png"; sourceTree = "<group>"; };
+		6E7E19C61802C8BE00D7B49C /* 3dotButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3dotButton.png; sourceTree = "<group>"; };
 		6ED72A421801017A003B5ED5 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		6ED72A431801017A003B5ED5 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		6ED72A451801017A003B5ED5 /* Goal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Goal.h; sourceTree = "<group>"; };
@@ -340,6 +368,24 @@
 			name = TestFlight;
 			sourceTree = "<group>";
 		};
+		6E171BAB1802B47F005926DF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6E171BAC1802B489005926DF /* OpenSans-ExtraBoldItalic.ttf */,
+				6E171BAD1802B489005926DF /* OpenSans-Regular.ttf */,
+				6E171BAE1802B489005926DF /* Lato-Black.ttf */,
+				6E171BAF1802B489005926DF /* OpenSans-Bold.ttf */,
+				6E171BB01802B489005926DF /* OpenSans-BoldItalic.ttf */,
+				6E171BB11802B489005926DF /* OpenSans-ExtraBold.ttf */,
+				6E171BB21802B489005926DF /* OpenSans-Italic.ttf */,
+				6E171BB31802B489005926DF /* OpenSans-Light.ttf */,
+				6E171BB41802B489005926DF /* OpenSans-LightItalic.ttf */,
+				6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */,
+				6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		6E6DA72117FEA650001E9D66 = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +510,8 @@
 				6E171BA31802A1FA005926DF /* JournalIcon.png */,
 				6E171BA41802A1FA005926DF /* MeditationIcon.png */,
 				6E171BA51802A1FA005926DF /* NutritionIcon.png */,
+				6E7E19C51802C8BE00D7B49C /* 3dotButton@2x.png */,
+				6E7E19C61802C8BE00D7B49C /* 3dotButton.png */,
 				6E171B9518029CF9005926DF /* exercise_icon.png */,
 				6E171B9218029CF9005926DF /* exercise_icon@2x.png */,
 				6E171B9118029CF9005926DF /* nutrition_icon.png */,
@@ -477,6 +525,7 @@
 				6EE0028717FF75C800B804CD /* checkmark.png */,
 				6EE0028817FF75C800B804CD /* checkmark@2x.png */,
 				6EE0028917FF75C800B804CD /* defaultprofile.png */,
+				6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */,
 				6EE0028A17FF75C800B804CD /* goal_icon.png */,
 				6EE0028B17FF75C800B804CD /* goal_icon@2x.png */,
 				6EE0028C17FF75C800B804CD /* goal_icon_gray.png */,
@@ -614,6 +663,7 @@
 		6EE0033F17FF819400B804CD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6E171BAB1802B47F005926DF /* Fonts */,
 				6EE0624D18005F6C007CAEBD /* M13Checkbox */,
 				6EE0034517FF824F00B804CD /* UIImage+ImageEffects */,
 				6EE0034017FF81D100B804CD /* MBProgressHUD */,
@@ -731,6 +781,7 @@
 				6E6DA74417FEA650001E9D66 /* Main_iPad.storyboard in Resources */,
 				6E171B9B18029CF9005926DF /* journal_icon@2x.png in Resources */,
 				6E171B9C18029CF9005926DF /* nutrition_icon@2x.png in Resources */,
+				6E7E19C81802C8BE00D7B49C /* 3dotButton.png in Resources */,
 				6E171BA81802A1FA005926DF /* JournalIcon.png in Resources */,
 				6E171B9A18029CF9005926DF /* exercise_icon@2x.png in Resources */,
 				6EE002B317FF75C800B804CD /* repeat_icon.png in Resources */,
@@ -742,10 +793,13 @@
 				6E171BA61802A1FA005926DF /* CompletedIcon.png in Resources */,
 				6EE002A817FF75C800B804CD /* defaultprofile.png in Resources */,
 				6E6987FC1801E08100216E61 /* 37x-Checkmark@2x.png in Resources */,
+				6E171BBF1802B489005926DF /* OpenSans-LightItalic.ttf in Resources */,
 				6EE0032617FF7D8200B804CD /* CHANGELOG.md in Resources */,
+				6E171BBD1802B489005926DF /* OpenSans-Italic.ttf in Resources */,
 				6EE002C017FF75C800B804CD /* thrivestreamsnavclear@2x.png in Resources */,
 				6EE002C317FF75C800B804CD /* Xbutton.png in Resources */,
 				6EE002AF17FF75C800B804CD /* menuButton.png in Resources */,
+				6E171BC01802B489005926DF /* OpenSans-Semibold.ttf in Resources */,
 				6EE002AC17FF75C800B804CD /* goal_icon_gray@2x.png in Resources */,
 				6EE002BD17FF75C800B804CD /* thrivestreamsnav.png in Resources */,
 				6EE002AA17FF75C800B804CD /* goal_icon@2x.png in Resources */,
@@ -756,13 +810,21 @@
 				6E6DA74917FEA650001E9D66 /* Images.xcassets in Resources */,
 				6E6987FB1801E08100216E61 /* 37x-Checkmark.png in Resources */,
 				6EE002AD17FF75C800B804CD /* logo.png in Resources */,
+				6E171BB91802B489005926DF /* Lato-Black.ttf in Resources */,
+				6E171BBC1802B489005926DF /* OpenSans-ExtraBold.ttf in Resources */,
 				6E6DA74117FEA650001E9D66 /* Main_iPhone.storyboard in Resources */,
 				6EE002A717FF75C800B804CD /* checkmark@2x.png in Resources */,
 				6EE002B617FF75C800B804CD /* settingsicon@2x.png in Resources */,
+				6E7E19C71802C8BE00D7B49C /* 3dotButton@2x.png in Resources */,
 				6EE002BC17FF75C800B804CD /* thriveButtonIcon@2x.png in Resources */,
+				6E171BBA1802B489005926DF /* OpenSans-Bold.ttf in Resources */,
 				6EE002B717FF75C800B804CD /* step_Icon.png in Resources */,
 				6EE002B917FF75C800B804CD /* step_icon_gray.png in Resources */,
+				6E7E19BA1802C42100D7B49C /* TS_Logo_BPLAN2.png in Resources */,
 				6E171BAA1802A1FA005926DF /* NutritionIcon.png in Resources */,
+				6E171BBE1802B489005926DF /* OpenSans-Light.ttf in Resources */,
+				6E171BB71802B489005926DF /* OpenSans-ExtraBoldItalic.ttf in Resources */,
+				6E171BBB1802B489005926DF /* OpenSans-BoldItalic.ttf in Resources */,
 				6EE002BB17FF75C800B804CD /* thriveButtonIcon.png in Resources */,
 				6EE002B217FF75C800B804CD /* reminder_icon@2x.png in Resources */,
 				6E171B9918029CF9005926DF /* nutrition_icon.png in Resources */,
@@ -774,10 +836,12 @@
 				6E171B9E18029CF9005926DF /* journal_icon.png in Resources */,
 				6E171BA018029CF9005926DF /* meditation_icon.png in Resources */,
 				6E171BA91802A1FA005926DF /* MeditationIcon.png in Resources */,
+				6E171BB81802B489005926DF /* OpenSans-Regular.ttf in Resources */,
 				6EE002BF17FF75C800B804CD /* thrivestreamsnavclear.png in Resources */,
 				6EE002BE17FF75C800B804CD /* thrivestreamsnav@2x.png in Resources */,
 				6EE002BA17FF75C800B804CD /* step_icon_gray@2x.png in Resources */,
 				6E6DA73817FEA650001E9D66 /* InfoPlist.strings in Resources */,
+				6E171BC11802B489005926DF /* OpenSans-SemiboldItalic.ttf in Resources */,
 				6EE002B417FF75C800B804CD /* repeat_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
