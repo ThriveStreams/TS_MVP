@@ -378,7 +378,7 @@
 }
 
 #pragma mark - UIControl overrides
-
+/*
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [super beginTrackingWithTouch:touch withEvent:event];
@@ -408,6 +408,6 @@
     [checkView setNeedsDisplay];
     [super cancelTrackingWithEvent:event];
 }
-
+*/
 @end
 

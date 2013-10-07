@@ -12,6 +12,7 @@
 @interface FundamentalGoalCell ()
 
 @property BOOL isChecked;
+@property UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 

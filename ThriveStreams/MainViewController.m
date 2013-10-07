@@ -72,7 +72,7 @@
                                       borderColor: BUTTON_THRIVE_BORDER
                                       fillColor:BUTTON_THRIVE_FILL];
 
-    ThriveButton *meditationButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:BUTTON_GOAL_RED fillColor:BUTTON_GOAL_RED withBlock:^{
+    ThriveButton *meditationButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"m_icon.png"] borderColor:BUTTON_GOAL_RED fillColor:BUTTON_GOAL_RED withBlock:^{
         if (meditationState == M13CheckboxStateUnchecked)
             meditationState = M13CheckboxStateChecked;
         else
@@ -83,7 +83,7 @@
         [_tableView reloadData];
     }];
     
-    ThriveButton *journalButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:BUTTON_STEP_GREEN fillColor:BUTTON_STEP_GREEN withBlock:^{
+    ThriveButton *journalButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"j_icon.png"] borderColor:BUTTON_STEP_GREEN fillColor:BUTTON_STEP_GREEN withBlock:^{
         if (journalState == M13CheckboxStateUnchecked)
             journalState = M13CheckboxStateChecked;
         else
@@ -94,7 +94,7 @@
         [_tableView reloadData];
     }];
     
-    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:color1 fillColor:color1 withBlock:^{
+    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"e_icon.png"] borderColor:color1 fillColor:color1 withBlock:^{
         if (exerciseState == M13CheckboxStateUnchecked)
             exerciseState = M13CheckboxStateChecked;
         else
@@ -105,7 +105,7 @@
         [_tableView reloadData];
     }];
     
-    ThriveButton *nutritionButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:color2 fillColor:color2 withBlock:^{
+    ThriveButton *nutritionButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"n_icon.png"] borderColor:color2 fillColor:color2 withBlock:^{
         if (nutritionState == M13CheckboxStateUnchecked)
             nutritionState = M13CheckboxStateChecked;
         else
@@ -202,6 +202,10 @@
 
 - (void)saveGoalData:(NSString *)goalTitle checkState:(M13CheckboxState)checkState
 {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Updating goal...";
+    
     UserSingleton *singleton = [UserSingleton sharedManager];
     NSDictionary *userInfo = [singleton returnDictionary];
     NSString *username = [userInfo objectForKey:@"username"];
@@ -222,6 +226,14 @@
             }
             
             [self.managedObjectContext saveOnSuccess:^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+                hud.mode = MBProgressHUDModeCustomView;
+                hud.labelText = @"Goal updated!";
+                [hud hide:YES afterDelay:1];
+                
                 NSLog(@"success");
             } onFailure:^(NSError *error) {
                 NSLog(@"There was an error! %@", error);
@@ -307,8 +319,6 @@
     }];
 
 }
-
-
 
 #pragma mark - UITableView Data Source delegates
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
