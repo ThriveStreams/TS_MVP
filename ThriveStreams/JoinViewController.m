@@ -249,6 +249,8 @@
 // Adds new user
 -(IBAction)addUser:(id)sender
 {
+    [self.view endEditing:YES];
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Joining Thrivestreams...";

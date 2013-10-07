@@ -139,14 +139,13 @@
     
     [self.view endEditing:YES];
     
-    
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"User"];
     NSPredicate *predicte = [NSPredicate predicateWithFormat:@"username == %@", currentUsername];
     [fetchRequest setPredicate:predicte];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
+    hud.dimBackground = YES;
     hud.labelText = @"Updating your information...";
     
     [self.managedObjectContext executeFetchRequest:fetchRequest onSuccess:^(NSArray *results) {
@@ -183,7 +182,6 @@
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
             hud.mode = MBProgressHUDModeCustomView;
-            hud.labelText = @"Updating your information...";
             hud.labelText = @"Information updated!";
             [hud hide:YES afterDelay:2];
             

@@ -185,6 +185,8 @@
 
 - (IBAction)loginUser:(id)sender
 {
+    [self.view endEditing:YES];
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading Thrivestreams...";

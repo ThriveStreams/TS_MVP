@@ -26,7 +26,7 @@
     
     M13CheckboxState meditationState;
     M13CheckboxState journalState;
-    M13CheckboxState excerciseState;
+    M13CheckboxState exerciseState;
     M13CheckboxState nutritionState;
 }
 @end
@@ -53,11 +53,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UserSingleton *singleton = [UserSingleton sharedManager];
-    NSDictionary *userInfo = [singleton returnDictionary];
-    NSSet *goalsSet = [userInfo objectForKey:@"goal"];
-    goalList = [goalsSet allObjects];
+
     
     //set up stackmob
     self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
@@ -65,7 +61,7 @@
     
     UIColor *color1 = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:166.0/255 alpha:1.0f];
     UIColor *color2 = [UIColor colorWithRed:92.0/255 green:102.0/255 blue:122.0/255 alpha:1.0f];
-
+    
     // set up background color
     [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
     
@@ -82,6 +78,8 @@
         else
             meditationState = M13CheckboxStateUnchecked;
         
+        [self saveGoalData:@"Meditation" checkState:meditationState];
+        
         [_tableView reloadData];
     }];
     
@@ -91,15 +89,19 @@
         else
             journalState = M13CheckboxStateUnchecked;
         
+        [self saveGoalData:@"Journal" checkState:journalState];
+        
         [_tableView reloadData];
     }];
     
-    ThriveButton *excerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:color1 fillColor:color1 withBlock:^{
-        if (excerciseState == M13CheckboxStateUnchecked)
-            excerciseState = M13CheckboxStateChecked;
+    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"goal_icon.png"] borderColor:color1 fillColor:color1 withBlock:^{
+        if (exerciseState == M13CheckboxStateUnchecked)
+            exerciseState = M13CheckboxStateChecked;
         else
-            excerciseState = M13CheckboxStateUnchecked;
-    
+            exerciseState = M13CheckboxStateUnchecked;
+
+        [self saveGoalData:@"Exercise" checkState:journalState];
+
         [_tableView reloadData];
     }];
     
@@ -108,11 +110,13 @@
             nutritionState = M13CheckboxStateChecked;
         else
             nutritionState = M13CheckboxStateUnchecked;
+        
+        [self saveGoalData:@"Nutrition" checkState:nutritionState];
     
         [_tableView reloadData];
     }];
     
-    ThriveButtonMenu *menu = [[ThriveButtonMenu alloc] initWithFrame:THRIVEMENU_DEFAULT_SUPERVIEW_CGRECT parent:self mainButton:mainThriveButton subButtons:meditationButton, journalButton, excerciseButton, nutritionButton, nil];
+    ThriveButtonMenu *menu = [[ThriveButtonMenu alloc] initWithFrame:THRIVEMENU_DEFAULT_SUPERVIEW_CGRECT parent:self mainButton:mainThriveButton subButtons:meditationButton, journalButton, exerciseButton, nutritionButton, nil];
     
     [self.view addSubview:menu];
     //
@@ -134,17 +138,76 @@
     self.navigationController.navigationBar.topItem.title = @"ThriveStreams";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@". . ." style:UIBarButtonItemStylePlain target:self action:@selector(showOverlay)];
     
+    [self populateGoals];
+}
+
+#pragma mark - Populate goals
+- (void)populateGoals
+{
+    // populate goals
+    UserSingleton *singleton = [UserSingleton sharedManager];
+    NSDictionary *userInfo = [singleton returnDictionary];
+    NSString *username = [userInfo objectForKey:@"username"];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Getting your goals...";
+    
+    NSFetchRequest *goalFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
+    [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"user == %@",username]];
+ 
+    [self.managedObjectContext executeFetchRequest:goalFetch onSuccess:^(NSArray *results) {
+        if ([results count] > 0) {
+            for (int index = 0; index < [results count]; index++)
+            {
+                Goal *goal = [results objectAtIndex:index];
+                if ([goal.title isEqualToString:@"Meditation"])
+                {
+                    if ([goal.isdone boolValue])
+                        meditationState = M13CheckboxStateChecked;
+                    else
+                        meditationState = M13CheckboxStateUnchecked;
+                }
+                else if ([goal.title isEqualToString:@"Journal"])
+                {
+                    if ([goal.isdone boolValue])
+                        journalState = M13CheckboxStateChecked;
+                        else
+                        journalState = M13CheckboxStateUnchecked;
+                    }
+                else if ([goal.title isEqualToString:@"Exercise"])
+                {
+                    if ([goal.isdone boolValue])
+                        exerciseState = M13CheckboxStateChecked;
+                    else
+                        exerciseState = M13CheckboxStateUnchecked;
+                }
+                else if ([goal.title isEqualToString:@"Nutrition"])
+                {
+                    if ([goal.isdone boolValue])
+                        nutritionState = M13CheckboxStateChecked;
+                    else
+                        nutritionState = M13CheckboxStateUnchecked;
+                }
+            }
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [_tableView reloadData];
+    }onFailure:^(NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 #pragma mark - Save Data methods
 
-- (void)saveGoalData:(NSString *)goalId checkState:(M13CheckboxState)checkState
+- (void)saveGoalData:(NSString *)goalTitle checkState:(M13CheckboxState)checkState
 {
     UserSingleton *singleton = [UserSingleton sharedManager];
     NSDictionary *userInfo = [singleton returnDictionary];
+    NSString *username = [userInfo objectForKey:@"username"];
     
     NSFetchRequest *goalFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
-    [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"goal_id == %@", goalId]];
+    [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"(title == %@) AND (user == %@)", goalTitle, username]];
     
     [self.managedObjectContext executeFetchRequest:goalFetch onSuccess:^(NSArray *results) {
         if ([results count] > 0) {
@@ -158,17 +221,8 @@
                 [goal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
             }
             
-            
             [self.managedObjectContext saveOnSuccess:^{
-                NSLog(@"Goal has been updated");
-                NSSet *goals = [userInfo objectForKey:@"goal"];
-                [goals enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                    if ([[(Goal *)obj goalId] isEqualToString:[goal goalId]])
-                    {
-                        obj = goal;
-                        *stop = YES;
-                    }
-                }];
+                NSLog(@"success");
             } onFailure:^(NSError *error) {
                 NSLog(@"There was an error! %@", error);
             }];
@@ -290,8 +344,8 @@
     // Excercise row
     else if (indexPath.row == 2)
     {
-        cell.goalLabel.text = @"Excercise";
-        cell.checkbox.checkState = excerciseState;
+        cell.goalLabel.text = @"Exercise";
+        cell.checkbox.checkState = exerciseState;
     }
     
     // Nutrition row
