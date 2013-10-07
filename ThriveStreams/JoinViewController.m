@@ -253,15 +253,15 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Joining Thrivestreams...";
     
-    User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
-   // User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
+    //User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
+    User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
     
     [newUser setValue:[self.emailField.text lowercaseString] forKey:[newUser primaryKeyField]];
     [newUser setValue:self.firstNameField.text forKeyPath:@"firstname"];
     [newUser setValue:self.lastNameField.text forKeyPath:@"lastname"];
     [newUser setPassword:self.passwordField.text];
     
-    Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+ /*   Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
     
     [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
     [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
@@ -295,7 +295,7 @@
     [newUser addGoalObject:meditationGoal];
     [newUser addGoalObject:journalGoal];
     [newUser addGoalObject:exerciseGoal];
-    [newUser addGoalObject:nutritionGoal];
+    [newUser addGoalObject:nutritionGoal];*/
 
     [self.managedObjectContext saveOnSuccess:^{
         
@@ -314,13 +314,12 @@
             if ([[[self appDelegate] client] isLoggedIn]) {
                 NSLog(@"Logged in");
             }
-            
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             //store into singleton
             UserSingleton *singleton = [UserSingleton sharedManager];
             singleton = [singleton initWithDictionary:results];
             
-            [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
-            
+            [self addDefaultGoals];
             
         } onFailure:^(NSError *error) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -337,6 +336,79 @@
         [errorAlertView show];
     }];
 }
+
+- (void)addDefaultGoals
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Setting up goals...";
+    NSFetchRequest *userFetch = [[NSFetchRequest alloc] initWithEntityName:@"User"];
+    [userFetch setPredicate:[NSPredicate predicateWithFormat:@"username == %@", _emailField.text]];
+    
+    [self.managedObjectContext executeFetchRequest:userFetch onSuccess:^(NSArray *results) {
+        if ([results count] > 0) {
+            User *currentUser = (User *)[results objectAtIndex:0];
+            
+            Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+            
+            [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+            [meditationGoal setValue:@"Meditation" forKey:@"title"];
+            [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
+            
+            Goal *journalGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+            
+            [journalGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+            [journalGoal setValue:@"Journal" forKey:@"title"];
+            [journalGoal setValue:[journalGoal assignObjectId] forKey:[journalGoal primaryKeyField]];
+            
+            Goal *exerciseGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+            
+            [exerciseGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+            [exerciseGoal setValue:@"Exercise" forKey:@"title"];
+            [exerciseGoal setValue:[exerciseGoal assignObjectId] forKey:[exerciseGoal primaryKeyField]];
+            
+            Goal *nutritionGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+            
+            [nutritionGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+            [nutritionGoal setValue:@"Nutrition" forKey:@"title"];
+            [nutritionGoal setValue:[nutritionGoal assignObjectId] forKey:[nutritionGoal primaryKeyField]];
+            
+            NSError *error = nil;
+            if (![self.managedObjectContext saveAndWait:&error]) {
+                NSLog(@"There was an error! %@", error);
+            }
+            else {
+                NSLog(@"Created goals with goals!");
+            }
+            
+            [currentUser addGoalObject:meditationGoal];
+            [currentUser addGoalObject:journalGoal];
+            [currentUser addGoalObject:exerciseGoal];
+            [currentUser addGoalObject:nutritionGoal];
+            
+            [self.managedObjectContext saveOnSuccess:^{
+                
+                NSLog(@"goals added to current user");
+                [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+            } onFailure:^(NSError *error) {
+                NSLog(@"Login Fail: %@",error);
+                NSString *errorString = [error description];
+                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [errorAlertView show];
+            }];
+        }
+    }
+            onFailure:^(NSError *error){
+                NSLog(@"Login Fail: %@",error);
+                NSString *errorString = [error description];
+                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [errorAlertView show];
+            }];
+    
+}
+
 
 // Cancel the current view
 - (IBAction)cancel:(id)sender

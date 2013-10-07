@@ -22,6 +22,7 @@
 
     NSArray *thriveItems;
     NSMutableString *fullname;
+    NSArray *goalList;
     
     M13CheckboxState meditationState;
     M13CheckboxState journalState;
@@ -52,6 +53,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UserSingleton *singleton = [UserSingleton sharedManager];
+    NSDictionary *userInfo = [singleton returnDictionary];
+    NSSet *goalsSet = [userInfo objectForKey:@"goal"];
+    goalList = [goalsSet allObjects];
     
     //set up stackmob
     self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];

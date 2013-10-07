@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ThriveStreams/MainViewController.m"
-            timestampString = "402788917.139309"
+            timestampString = "402798462.379725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "-addDefaultGoals"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
