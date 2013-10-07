@@ -24,22 +24,29 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _goalLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 11, 256, 21)];
+        _goalLabel = [[UILabel alloc] initWithFrame:CGRectMake(52, 12, 224, 21)];
         [_goalLabel setFont:[UIFont systemFontOfSize:14.0f]];
         
         // set up
         _isChecked = NO;
-        _checkbox = [[M13Checkbox alloc] initWithFrame:CGRectMake(8, 11, 28, 22)];
+        _checkbox = [[M13Checkbox alloc] initWithFrame:CGRectMake(284, 11, 28, 22)];
         _checkbox.flat = YES;
 
+        _thriveImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        
         [self.contentView addSubview:_goalLabel];
         [self.contentView addSubview:_checkbox];
+        [self.contentView addSubview:_thriveImage];
         
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     return self;
 }
 
+-(void)setImageForThrive:(UIImage *)image
+{
+    [_thriveImage setImage:image];
+}
 
 - (void)setGoalLabel:(UILabel *)goalLabel
 {

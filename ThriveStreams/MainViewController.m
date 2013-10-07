@@ -28,6 +28,11 @@
     M13CheckboxState journalState;
     M13CheckboxState exerciseState;
     M13CheckboxState nutritionState;
+    
+    UIImage *meditationImage;
+    UIImage *journalImage;
+    UIImage *exerciseImage;
+    UIImage *nutritionImage;
 }
 @end
 
@@ -54,13 +59,21 @@
 {
     [super viewDidLoad];
 
+    //initialize images with defaults
+    meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
+    journalImage = [UIImage imageNamed:@"JournalIcon.png"];
+    exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
+    nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
+    
+    
+    UIColor *meditationColor = [UIColor colorWithRed:155.0/255.0 green:89.0/255.0 blue:182.0/255.0 alpha:1.0f];
+    UIColor *journalColor = [UIColor colorWithRed:241.0/255.0 green:196.0/255.0 blue:15.0/255.0 alpha:1.0f];
+    UIColor *exerciseColor = [UIColor colorWithRed:46.0/255.0 green:204.0/255.0 blue:113.0/255.0 alpha:1.0f];
+    UIColor *nutritionColor = [UIColor colorWithRed:230.0/255.0 green:126.0/255.0 blue:34.0/255.0 alpha:1.0f];
     
     //set up stackmob
     self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
     self.client = [SMClient defaultClient];
-    
-    UIColor *color1 = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:166.0/255 alpha:1.0f];
-    UIColor *color2 = [UIColor colorWithRed:92.0/255 green:102.0/255 blue:122.0/255 alpha:1.0f];
     
     // set up background color
     [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
@@ -72,45 +85,66 @@
                                       borderColor: BUTTON_THRIVE_BORDER
                                       fillColor:BUTTON_THRIVE_FILL];
 
-    ThriveButton *meditationButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"m_icon.png"] borderColor:BUTTON_GOAL_RED fillColor:BUTTON_GOAL_RED withBlock:^{
+    ThriveButton *meditationButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"meditation_icon.png"] borderColor:meditationColor fillColor:meditationColor withBlock:^{
         if (meditationState == M13CheckboxStateUnchecked)
+        {
+            meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
             meditationState = M13CheckboxStateChecked;
+        }
         else
+        {
+            meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
             meditationState = M13CheckboxStateUnchecked;
-        
+        }
         [self saveGoalData:@"Meditation" checkState:meditationState];
         
         [_tableView reloadData];
     }];
     
-    ThriveButton *journalButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"j_icon.png"] borderColor:BUTTON_STEP_GREEN fillColor:BUTTON_STEP_GREEN withBlock:^{
+    ThriveButton *journalButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"journal_icon.png"] borderColor:journalColor fillColor:journalColor withBlock:^{
         if (journalState == M13CheckboxStateUnchecked)
+        {
+            journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
             journalState = M13CheckboxStateChecked;
+        }
         else
+        {
+            journalImage = [UIImage imageNamed:@"JournalIcon.png"];
             journalState = M13CheckboxStateUnchecked;
+        }
         
         [self saveGoalData:@"Journal" checkState:journalState];
         
         [_tableView reloadData];
     }];
     
-    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"e_icon.png"] borderColor:color1 fillColor:color1 withBlock:^{
+    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"exercise_icon.png"] borderColor:exerciseColor fillColor:exerciseColor withBlock:^{
         if (exerciseState == M13CheckboxStateUnchecked)
+        {
             exerciseState = M13CheckboxStateChecked;
+            exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
+        }
         else
+        {
             exerciseState = M13CheckboxStateUnchecked;
-
+            exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
+        }
         [self saveGoalData:@"Exercise" checkState:journalState];
 
         [_tableView reloadData];
     }];
     
-    ThriveButton *nutritionButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"n_icon.png"] borderColor:color2 fillColor:color2 withBlock:^{
+    ThriveButton *nutritionButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"nutrition_icon.png"] borderColor:nutritionColor fillColor:nutritionColor withBlock:^{
         if (nutritionState == M13CheckboxStateUnchecked)
+        {
+            nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
             nutritionState = M13CheckboxStateChecked;
+        }
         else
+        {
+            nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
             nutritionState = M13CheckboxStateUnchecked;
-        
+        }
         [self saveGoalData:@"Nutrition" checkState:nutritionState];
     
         [_tableView reloadData];
@@ -164,30 +198,54 @@
                 if ([goal.title isEqualToString:@"Meditation"])
                 {
                     if ([goal.isdone boolValue])
+                    {
+                        meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
                         meditationState = M13CheckboxStateChecked;
+                    }
                     else
+                    {
+                        meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
                         meditationState = M13CheckboxStateUnchecked;
+                    }
                 }
                 else if ([goal.title isEqualToString:@"Journal"])
                 {
                     if ([goal.isdone boolValue])
+                    {
+                        journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
                         journalState = M13CheckboxStateChecked;
-                        else
+                    }
+                    else
+                    {
+                        journalImage = [UIImage imageNamed:@"JournalIcon.png"];
                         journalState = M13CheckboxStateUnchecked;
                     }
+                }
                 else if ([goal.title isEqualToString:@"Exercise"])
                 {
                     if ([goal.isdone boolValue])
+                    {
+                        exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
                         exerciseState = M13CheckboxStateChecked;
+                    }
                     else
+                    {
+                        exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
                         exerciseState = M13CheckboxStateUnchecked;
+                    }
                 }
                 else if ([goal.title isEqualToString:@"Nutrition"])
                 {
                     if ([goal.isdone boolValue])
+                    {
+                        nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
                         nutritionState = M13CheckboxStateChecked;
+                    }
                     else
+                    {
+                        nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
                         nutritionState = M13CheckboxStateUnchecked;
+                    }
                 }
             }
         }
@@ -341,7 +399,7 @@
     {
         cell.goalLabel.text = @"Meditation";
         cell.checkbox.checkState = meditationState;
-        NSLog(@"Checkstate %u", meditationState);
+        cell.thriveImage.image = meditationImage;
     }
     
     // Journal row
@@ -349,6 +407,7 @@
     {
         cell.goalLabel.text = @"Journal";
         cell.checkbox.checkState = journalState;
+        cell.thriveImage.image = journalImage;
     }
 
     // Excercise row
@@ -356,6 +415,7 @@
     {
         cell.goalLabel.text = @"Exercise";
         cell.checkbox.checkState = exerciseState;
+        cell.thriveImage.image = exerciseImage;
     }
     
     // Nutrition row
@@ -363,6 +423,7 @@
     {
         cell.goalLabel.text = @"Nutrition";
         cell.checkbox.checkState = nutritionState;
+        cell.thriveImage.image = nutritionImage;
     }
 }
 

@@ -13,6 +13,11 @@
 
 @property (nonatomic, strong) UILabel *goalLabel;
 @property (nonatomic, strong) M13Checkbox *checkbox;
+@property (nonatomic, strong) UIImageView *thriveImage;
+
+-(void)setImageForThrive:(UIImage *)image;
+- (void)setGoalLabel:(UILabel *)goalLabel;
+
 
 
 @end
