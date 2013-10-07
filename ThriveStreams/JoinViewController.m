@@ -1,0 +1,354 @@
+//
+//  JoinViewController.m
+//  ThriveStreams
+//
+//  Created by Ryan Badilla on 10/4/13.
+//  Copyright (c) 2013 ThriveStreams. All rights reserved.
+//
+
+#import "JoinViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
+#import "FlatUIHelper.h"
+#import "StackMob.h"
+#import "User.h"
+#import "Goal.h"
+#import "UserSingleton.h"
+#import "MBProgressHUD.h"
+
+@interface JoinViewController ()
+{
+    UITapGestureRecognizer *tapOutsideKeyboard;
+}
+
+@end
+
+@implementation JoinViewController
+
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize client = _client;
+
+- (AppDelegate *)appDelegate {
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Setup stackmob and core data
+    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+    self.client = [SMClient defaultClient];
+    
+    // setup the background color for the view
+    [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
+    
+    // Color and font stuff
+    UIColor *greyColor = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:166.0/255 alpha:1.0f];
+    UIColor *navigationBarColor = [UIColor colorWithRed:189.0/255 green:195.0/255 blue:199.0/255 alpha:1.0];
+    
+    // Configure the navigation bar to a flat grey design and other stuff
+    [self.navigationController.navigationBar setBackgroundImage:[FlatUIHelper imageWithColor:navigationBarColor cornerRadius:0] forBarMetrics:UIBarMetricsDefault];
+
+    self.navigationController.navigationBar.topItem.title = @"Join";
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Let's Do It!"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(addUser:)];
+    
+    [FlatUIHelper configureItemOrProxy:self.navigationItem.rightBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
+    
+    //disable rightbarbutton
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(cancel:)];
+    [FlatUIHelper configureItemOrProxy:self.navigationItem.leftBarButtonItem forFlatButtonWithColor:navigationBarColor highlightedColor:greyColor cornerRadius:3];
+    
+    // set up textView
+    self.policyTextView.backgroundColor = [UIColor clearColor];
+    self.policyTextView.font = [UIFont italicSystemFontOfSize:11.0f];
+    self.policyTextView.editable = NO;
+    self.policyTextView.text = @"By proceeding, you are agreeing to the ThriveStreams Terms of Service and Privacy Policy.";
+    
+    // set up the text fields
+    self.firstNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    self.firstNameField.layer.cornerRadius = 3.0f;
+    self.firstNameField.placeholder = @"First Name";
+    self.firstNameField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.firstNameField.leftView = leftView1;
+    self.firstNameField.font = [UIFont systemFontOfSize:16.0f];
+    self.firstNameField.returnKeyType = UIReturnKeyNext;
+    
+    self.lastNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    self.lastNameField.layer.cornerRadius = 3.0f;
+    self.lastNameField.placeholder = @"Last Name";
+    self.lastNameField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.lastNameField.leftView = leftView2;
+    self.lastNameField.font = [UIFont systemFontOfSize:16.0f];
+    self.lastNameField.returnKeyType = UIReturnKeyNext;
+    
+    self.emailField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    self.emailField.layer.cornerRadius = 3.0f;
+    self.emailField.placeholder = @"Email Address";
+    self.emailField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.emailField.leftView = leftView3;
+    self.emailField.font = [UIFont systemFontOfSize:16.0f];
+    self.emailField.returnKeyType = UIReturnKeyNext;
+    
+    self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    self.passwordField.layer.cornerRadius = 3.0f;
+    self.passwordField.placeholder = @"Password";
+    self.passwordField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView4 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.passwordField.leftView = leftView4;
+    self.passwordField.font = [UIFont systemFontOfSize:16.0f];
+    self.passwordField.returnKeyType = UIReturnKeyNext;
+    
+    //set up delegates
+    self.firstNameField.delegate = self;
+    self.lastNameField.delegate = self;
+    self.emailField.delegate = self;
+    self.passwordField.delegate = self;
+    
+    //initialize tap gesture to remove keyboard
+    tapOutsideKeyboard = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapRemoveKeyboard:)];
+    tapOutsideKeyboard.cancelsTouchesInView = FALSE;
+    [self.view addGestureRecognizer:tapOutsideKeyboard];
+}
+
+#pragma mark - removeKeyboard method
+-(void)singleTapRemoveKeyboard:(UITapGestureRecognizer *)sender
+{
+    [self.view endEditing:YES];
+}
+
+#pragma mark - UITextFieldDelegates
+-(void)enableJoinButton
+{
+    if ((self.firstNameField.text.length > 0) &&
+        (self.lastNameField.text.length > 0) &&
+        (self.passwordField.text.length > 0) &&
+        (self.emailField.text.length > 0))
+    {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    }
+    else
+    {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    
+    if (![self.passwordField.text isEqualToString:@""] &&
+        ![self.emailField.text isEqualToString:@""] &&
+        ![self.firstNameField.text isEqualToString:@""] &&
+        ![self.lastNameField.text isEqualToString:@""])
+    {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    }
+    
+    // last text field to be edited is password field
+    else if ((_firstNameField.text.length > 0) &&
+        (_lastNameField.text.length > 0) &&
+        (_emailField.text.length > 0) &&
+        (_passwordField.text.length <= 0))
+    {
+        [_firstNameField setReturnKeyType:UIReturnKeyNext];
+        [_lastNameField setReturnKeyType:UIReturnKeyNext];
+        [_emailField setReturnKeyType:UIReturnKeyNext];
+        [_passwordField setReturnKeyType:UIReturnKeyDone];
+    }
+    
+    // last text field to be edited is the email field
+    else if ((_firstNameField.text.length > 0) &&
+        (_lastNameField.text.length > 0) &&
+        (_emailField.text.length > 0) &&
+        (_passwordField.text.length <= 0))
+    {
+        [_firstNameField setReturnKeyType:UIReturnKeyNext];
+        [_lastNameField setReturnKeyType:UIReturnKeyNext];
+        [_emailField setReturnKeyType:UIReturnKeyDone];
+        [_passwordField setReturnKeyType:UIReturnKeyNext];
+    }
+        
+    // last text field to be edited is the last name field
+    else if ((_firstNameField.text.length > 0) &&
+             (_lastNameField.text.length <= 0) &&
+             (_emailField.text.length > 0) &&
+             (_passwordField.text.length > 0))
+    {
+        [_firstNameField setReturnKeyType:UIReturnKeyNext];
+        [_lastNameField setReturnKeyType:UIReturnKeyDone];
+        [_emailField setReturnKeyType:UIReturnKeyNext];
+        [_passwordField setReturnKeyType:UIReturnKeyNext];
+    }
+
+    // last text field to be edited is the first name field
+    else if ((_firstNameField.text.length <= 0) &&
+             (_lastNameField.text.length > 0) &&
+             (_emailField.text.length > 0) &&
+             (_passwordField.text.length > 0))
+    {
+        [_firstNameField setReturnKeyType:UIReturnKeyDone];
+        [_lastNameField setReturnKeyType:UIReturnKeyNext];
+        [_emailField setReturnKeyType:UIReturnKeyNext];
+        [_passwordField setReturnKeyType:UIReturnKeyNext];
+    }
+    
+    [self.view endEditing:YES];
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    if (textField.returnKeyType == UIReturnKeyDone)
+    {
+        [self.view endEditing:YES];
+    }
+    else if (textField == _firstNameField && textField.returnKeyType != UIReturnKeyDone)
+    {
+        [_lastNameField becomeFirstResponder];
+    }
+    else if (textField == _lastNameField && textField.returnKeyType != UIReturnKeyDone)
+    {
+        [_emailField becomeFirstResponder];
+    }
+    else if (textField == _emailField && textField.returnKeyType != UIReturnKeyDone)
+    {
+        [_passwordField becomeFirstResponder];
+    }
+    else if (textField == _passwordField && textField.returnKeyType != UIReturnKeyDone)
+    {
+        [_firstNameField becomeFirstResponder];
+    }
+    return YES;
+}
+
+
+#pragma mark - IBActions for Navigation Bar
+// Adds new user
+-(IBAction)addUser:(id)sender
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Joining Thrivestreams...";
+    
+    User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
+   // User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
+    
+    [newUser setValue:[self.emailField.text lowercaseString] forKey:[newUser primaryKeyField]];
+    [newUser setValue:self.firstNameField.text forKeyPath:@"firstname"];
+    [newUser setValue:self.lastNameField.text forKeyPath:@"lastname"];
+    [newUser setPassword:self.passwordField.text];
+    
+    Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+    
+    [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+    [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
+    
+    Goal *journalGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+    
+    [journalGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+    [journalGoal setValue:@"Journal" forKey:@"title"];
+    [journalGoal setValue:[journalGoal assignObjectId] forKey:[journalGoal primaryKeyField]];
+    
+    Goal *exerciseGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+    
+    [exerciseGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+    [exerciseGoal setValue:@"Exercise" forKey:@"title"];
+    [exerciseGoal setValue:[exerciseGoal assignObjectId] forKey:[exerciseGoal primaryKeyField]];
+    
+    Goal *nutritionGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
+    
+    [nutritionGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
+    [nutritionGoal setValue:@"Nutrition" forKey:@"title"];
+    [nutritionGoal setValue:[nutritionGoal assignObjectId] forKey:[nutritionGoal primaryKeyField]];
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext saveAndWait:&error]) {
+        NSLog(@"There was an error! %@", error);
+    }
+    else {
+        NSLog(@"New user created with goals!");
+    }
+    
+    [newUser addGoalObject:meditationGoal];
+    [newUser addGoalObject:journalGoal];
+    [newUser addGoalObject:exerciseGoal];
+    [newUser addGoalObject:nutritionGoal];
+
+    [self.managedObjectContext saveOnSuccess:^{
+        
+        NSLog(@"New user created yo!");
+        
+        //set up  welcome alert
+        /*
+         * A no internet connect error
+         *
+         Login Fail: Error Domain=SMError Code=-105 "The Internet connection appears to be offline." UserInfo=0x9c635b0 {NSErrorFailingURLStringKey=https://api.stackmob.com/user/accessToken, NSErrorFailingURLKey=https://api.stackmob.com/user/accessToken, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x982f040 "The Internet connection appears to be offline."}
+         */
+        
+        [self.client loginWithUsername:[self.emailField.text lowercaseString] password:self.passwordField.text onSuccess:^(NSDictionary *results) {
+            
+            NSLog(@"Login Success %@",results);
+            if ([[[self appDelegate] client] isLoggedIn]) {
+                NSLog(@"Logged in");
+            }
+            
+            //store into singleton
+            UserSingleton *singleton = [UserSingleton sharedManager];
+            singleton = [singleton initWithDictionary:results];
+            
+            [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
+            
+            
+        } onFailure:^(NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            NSLog(@"Login Fail: %@",error);
+        }];
+        
+    } onFailure:^(NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self.managedObjectContext deleteObject:newUser];
+        [newUser removePassword];
+        NSLog(@"Error: %@", error);
+        NSString *errorString = [error description];
+        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [errorAlertView show];
+    }];
+}
+
+// Cancel the current view
+- (IBAction)cancel:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
