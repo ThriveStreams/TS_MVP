@@ -25,8 +25,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _goalLabel = [[UILabel alloc] initWithFrame:CGRectMake(52, 12, 224, 21)];
-        [_goalLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        
+        [_goalLabel setFont:[UIFont fontWithName:@"OpenSans" size:14.0]];
         // set up
         _isChecked = NO;
         _checkbox = [[M13Checkbox alloc] initWithFrame:CGRectMake(284, 11, 28, 22)];
@@ -41,6 +40,11 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     return self;
+}
+
+-(void)setParseObjectID:(NSString *)parseObjectID
+{
+    _parseObjectID = parseObjectID;
 }
 
 -(void)setImageForThrive:(UIImage *)image

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "StackMob.h"
+#import <Parse/Parse.h>
 
 
 @implementation AppDelegate
@@ -16,6 +16,7 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize coreDataStore = _coreDataStore;
 
+/*
 - (NSManagedObjectModel *)managedObjectModel
 {
     if (_managedObjectModel != nil)
@@ -25,7 +26,7 @@
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"ThriveStreamsModel" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
-}
+} */
 
 - (void)resetWindowToInitialView
 {
@@ -43,10 +44,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-
+/*
     self.client = [[SMClient alloc] initWithAPIVersion:@"0"
                                         publicKey:@"d948e843-0438-49bf-8eed-5af4047bb657"];
-    self.coreDataStore = [self.client coreDataStoreWithManagedObjectModel:self.managedObjectModel];
+    self.coreDataStore = [self.client coreDataStoreWithManagedObjectModel:self.managedObjectModel]; */
+    
+    [Parse setApplicationId:@"Fa9APVfjcdd0Qs4gQgRbHdJ2hDNZgntu057M26bA"
+                  clientKey:@"j0uOIbfelOwwUGeifHFPMEc5XnaYHw6tJIvQBO72"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     [TestFlight takeOff:@"e327df57-ff21-4bdf-8732-deac5352b1ef"];
     

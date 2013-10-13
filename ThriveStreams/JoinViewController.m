@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 #import "FlatUIHelper.h"
-#import "StackMob.h"
+#import <Parse/Parse.h>
 #import "User.h"
 #import "Goal.h"
 #import "UserSingleton.h"
@@ -25,12 +25,12 @@
 
 @implementation JoinViewController
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize client = _client;
-
+//@synthesize managedObjectContext = _managedObjectContext;
+//@synthesize client = _client;
+/*
 - (AppDelegate *)appDelegate {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
+} */
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -47,8 +47,8 @@
     [super viewDidLoad];
     
     // Setup stackmob and core data
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
-    self.client = [SMClient defaultClient];
+//    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+//    self.client = [SMClient defaultClient];
     
     // setup the background color for the view
     [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
@@ -59,16 +59,23 @@
     
     // Configure the navigation bar to a flat grey design and other stuff
   //  [self.navigationController.navigationBar setBackgroundImage:[FlatUIHelper imageWithColor:navigationBarColor cornerRadius:0] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor colorWithWhite:0.4 alpha:1.0],
+      UITextAttributeTextColor,
+      [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0],
+      UITextAttributeTextShadowColor,
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
+      UITextAttributeTextShadowOffset,
+      [UIFont fontWithName:@"OpenSans" size:0.0],
+      UITextAttributeFont,
+      nil]];
+    
+    
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0]];
 
     self.navigationController.navigationBar.topItem.title = @"Join";
-    
-    NSDictionary* navBarDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.4 alpha:1.0], UITextAttributeTextColor,
-                                      [UIColor clearColor], UITextAttributeTextShadowColor,
-                                      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-                                      [UIFont fontWithName:@"OpenSans-Light" size:26.0], UITextAttributeFont, nil];
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:navBarDictionary];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Let's Do It!"
                                                                               style:UIBarButtonItemStylePlain
@@ -78,12 +85,12 @@
     NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
                                                       [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                                       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                                      [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                                      [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
                                                       nil];
     NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                                     [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                                     [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                                    [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                                    [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
                                                     nil];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
@@ -101,7 +108,7 @@
     NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                              [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                              [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-                                             [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                             [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
                                              nil];
     
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
@@ -121,7 +128,7 @@
     self.firstNameField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.firstNameField.leftView = leftView1;
-    self.firstNameField.font = [UIFont systemFontOfSize:16.0f];
+    self.firstNameField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.firstNameField.returnKeyType = UIReturnKeyNext;
     
     self.lastNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -130,7 +137,7 @@
     self.lastNameField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.lastNameField.leftView = leftView2;
-    self.lastNameField.font = [UIFont systemFontOfSize:16.0f];
+    self.lastNameField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.lastNameField.returnKeyType = UIReturnKeyNext;
     
     self.emailField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -139,7 +146,7 @@
     self.emailField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.emailField.leftView = leftView3;
-    self.emailField.font = [UIFont systemFontOfSize:16.0f];
+    self.emailField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.emailField.returnKeyType = UIReturnKeyNext;
     
     self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -148,7 +155,7 @@
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView4 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.passwordField.leftView = leftView4;
-    self.passwordField.font = [UIFont systemFontOfSize:16.0f];
+    self.passwordField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.passwordField.returnKeyType = UIReturnKeyNext;
     
     //set up delegates
@@ -277,7 +284,47 @@
 
 #pragma mark - IBActions for Navigation Bar
 // Adds new user
--(IBAction)addUser:(id)sender
+
+- (IBAction)addUser:(id)sender {
+    PFUser *user = [PFUser user];
+    user.username = _emailField.text;
+    user.password = _passwordField.text;
+    user.email = _emailField.text;
+    
+    // other fields can be set just like with PFObject
+    user[@"firstName"] = _firstNameField.text;
+    user[@"lastName"] = _lastNameField.text;
+    
+    [self addDefaultGoals:user];
+    
+    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            // Hooray! Let them use the app now.
+            NSLog(@"added new user");
+            [PFUser logInWithUsernameInBackground:_emailField.text password:_passwordField.text
+                                            block:^(PFUser *user, NSError *error) {
+                                                if (user) {
+                                                    // Do stuff after successful login.
+                                                    [self addDefaultGoals:user];
+                                                    [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
+                                                } else {
+                                                    // The login failed. Check error to see why.
+                                                    NSString *errorString = [error userInfo][@"error"];
+                                                    UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                                                    [errorAlertView show];
+                                                }
+                                            }];
+        
+        } else {
+            NSString *errorString = [error userInfo][@"error"];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh!" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+            // Show the errorString somewhere and let the user try again.
+        }
+    }];
+}
+
+/*-(IBAction)addUser:(id)sender
 {
     [self.view endEditing:YES];
     
@@ -291,7 +338,7 @@
     [newUser setValue:[self.emailField.text lowercaseString] forKey:[newUser primaryKeyField]];
     [newUser setValue:self.firstNameField.text forKeyPath:@"firstname"];
     [newUser setValue:self.lastNameField.text forKeyPath:@"lastname"];
-    [newUser setPassword:self.passwordField.text];
+    [newUser setPassword:self.passwordField.text]; */
     
  /*   Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
     
@@ -329,9 +376,9 @@
     [newUser addGoalObject:exerciseGoal];
     [newUser addGoalObject:nutritionGoal];*/
 
-    [self.managedObjectContext saveOnSuccess:^{
+ /*   [self.managedObjectContext saveOnSuccess:^{
         
-        NSLog(@"New user created yo!");
+        NSLog(@"New user created yo!"); */
         
         //set up  welcome alert
         /*
@@ -340,7 +387,7 @@
          Login Fail: Error Domain=SMError Code=-105 "The Internet connection appears to be offline." UserInfo=0x9c635b0 {NSErrorFailingURLStringKey=https://api.stackmob.com/user/accessToken, NSErrorFailingURLKey=https://api.stackmob.com/user/accessToken, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x982f040 "The Internet connection appears to be offline."}
          */
         
-        [self.client loginWithUsername:[self.emailField.text lowercaseString] password:self.passwordField.text onSuccess:^(NSDictionary *results) {
+  /*      [self.client loginWithUsername:[self.emailField.text lowercaseString] password:self.passwordField.text onSuccess:^(NSDictionary *results) {
             
             NSLog(@"Login Success %@",results);
             if ([[[self appDelegate] client] isLoggedIn]) {
@@ -367,8 +414,36 @@
         UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [errorAlertView show];
     }];
+} */
+
+- (void)addDefaultGoals:(PFUser *)user
+{
+    NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
+    NSArray *fundamentals = [NSArray arrayWithObjects: @"SAeeSNsDWM", @"ZPHaJ8CjvS", @"xj435NyIuW", @"h3AOIcsUkd", nil];
+
+    PFQuery *fundamentalsQuery = [PFQuery queryWithClassName:@"Goal"];
+    [fundamentalsQuery whereKey:@"objectId" containedIn:fundamentals];
+    
+    [fundamentalsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d objects", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                NSLog(@"%@", object.objectId);
+                [objectArray addObject:object];
+            }
+            NSLog(@"objectArray count: %d", [objectArray count]);
+            [[PFUser currentUser] setObject:objectArray forKey:@"ThriveStreams"];
+            
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
+/*
 - (void)addDefaultGoals
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -440,7 +515,7 @@
             }];
     
 }
-
+*/
 
 // Cancel the current view
 - (IBAction)cancel:(id)sender

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class SMClient;
+//@class SMClient;
 
 @interface JoinViewController : UIViewController <UITextFieldDelegate>
 
@@ -18,8 +18,8 @@
 @property (nonatomic, weak) IBOutlet UITextField *passwordField;
 @property (nonatomic, weak) IBOutlet UITextView *policyTextView;
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (strong, nonatomic) SMClient *client;
+//@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (strong, nonatomic) SMClient *client;
 
 -(IBAction)addUser:(id)sender;
 -(IBAction)cancel:(id)sender;

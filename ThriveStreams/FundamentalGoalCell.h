@@ -14,7 +14,9 @@
 @property (nonatomic, strong) UILabel *goalLabel;
 @property (nonatomic, strong) M13Checkbox *checkbox;
 @property (nonatomic, strong) UIImageView *thriveImage;
+@property (nonatomic, strong) NSString *parseObjectID;
 
+-(void)setParseObjectID:(NSString *)parseObjectID;
 -(void)setImageForThrive:(UIImage *)image;
 - (void)setGoalLabel:(UILabel *)goalLabel;
 

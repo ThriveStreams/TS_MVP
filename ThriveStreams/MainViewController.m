@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 #import "UserSingleton.h"
 #import "FundamentalGoalCell.h"
+#import <Parse/Parse.h>
 #import "User.h"
 #import "Goal.h"
 
@@ -22,8 +23,8 @@
 
     NSArray *thriveItems;
     NSMutableString *fullname;
-    NSArray *goalList;
-    
+    NSMutableArray *goalList;
+
     M13CheckboxState meditationState;
     M13CheckboxState journalState;
     M13CheckboxState exerciseState;
@@ -96,7 +97,7 @@
             meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
             meditationState = M13CheckboxStateUnchecked;
         }
-        [self saveGoalData:@"Meditation" checkState:meditationState];
+        [self saveGoalData:@"h3AOIcsUkd" checkState:meditationState];
         
         [_tableView reloadData];
     }];
@@ -113,7 +114,7 @@
             journalState = M13CheckboxStateUnchecked;
         }
         
-        [self saveGoalData:@"Journal" checkState:journalState];
+        [self saveGoalData:@"xj435NyIuW" checkState:journalState];
         
         [_tableView reloadData];
     }];
@@ -129,7 +130,7 @@
             exerciseState = M13CheckboxStateUnchecked;
             exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
         }
-        [self saveGoalData:@"Exercise" checkState:journalState];
+        [self saveGoalData:@"ZPHaJ8CjvS" checkState:journalState];
 
         [_tableView reloadData];
     }];
@@ -145,7 +146,7 @@
             nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
             nutritionState = M13CheckboxStateUnchecked;
         }
-        [self saveGoalData:@"Nutrition" checkState:nutritionState];
+        [self saveGoalData:@"SAeeSNsDWM" checkState:nutritionState];
     
         [_tableView reloadData];
     }];
@@ -171,31 +172,156 @@
     // set up navigationbar
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithWhite:0.6 alpha:0.9]];
     UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 260, 20)];
-    [logo setImage:[UIImage imageNamed:@"TS_Logo_BPLAN.png"]];
+    [logo setImage:[UIImage imageNamed:@"TS_Logo_BPLAN2.png"]];
     [logo setContentMode:UIViewContentModeScaleAspectFit];
     self.navigationItem.titleView = logo;
     
-    NSLog(@"CRECT: %f, %f, %f, %f", logo.frame.origin.x, logo.frame.origin.y, logo.frame.size.height, logo.frame.size.width);
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"3dotButton.png"] style:UIBarStyleDefault target:self action:@selector(showOverlay)];
+
+    // hack to push navigation bar image
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)]];
+    self.navigationItem.leftBarButtonItem.enabled = NO;
     
    // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@". . ." style:UIBarButtonItemStylePlain target:self action:@selector(showOverlay)];
     
     [self populateGoals];
+  //  [self addDefaultGoals:[PFUser currentUser]];
 }
 
 #pragma mark - Populate goals
 - (void)populateGoals
 {
-    // populate goals
-    UserSingleton *singleton = [UserSingleton sharedManager];
-    NSDictionary *userInfo = [singleton returnDictionary];
-    NSString *username = [userInfo objectForKey:@"username"];
+    NSArray *goalArray = PFUser.currentUser[@"ThriveStreams"];
+    NSMutableArray *goalIDArray = [[NSMutableArray alloc] initWithCapacity:[goalArray count]];
+    
+    // copy the goal IDs
+    for (PFObject *goal in goalArray)
+    {
+        [goalIDArray addObject:[goal objectId]];
+    }
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"UserLog"];
+    [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
+    [query whereKey:@"Goal" containedIn:goalIDArray];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Getting your goals...";
     
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *userLogObj in objects)
+            {
+                [self setCheckboxForGoalID:[userLogObj valueForKey:@"Goal"] isDone:YES];
+            }
+            [_tableView reloadData];
+        }
+        else
+        {
+            NSLog(@"Error: %@", error);
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+
+    /*
+    if (goalArray != nil && [goalArray count] > 0)
+    {
+        for (PFObject *goalObject in goalArray)
+        {
+            NSLog(@"userID: %@", [[PFUser currentUser] objectId]);
+                                
+            PFQuery *query =[PFQuery queryWithClassName:@"UserLog"];
+            [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
+            [query whereKey:@"Goal" equalTo:[goalObject objectId]];
+        
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                NSLog(@"objects count: %d", [objects count]);
+            }];
+        }
+    }
+    else
+    {
+        [self addDefaultGoals:[PFUser currentUser]];
+    } */
+}
+
+-(void)setCheckboxForGoalID:(NSString *)goalID isDone:(BOOL)done
+{
+    
+    // goal is meditation
+    if ([goalID isEqualToString:@"h3AOIcsUkd"])
+    {
+        if (done)
+        {
+            meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
+            meditationState = M13CheckboxStateChecked;
+        }
+        else
+        {
+            meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
+            meditationState = M13CheckboxStateUnchecked;
+        }
+    }
+    
+    //goal is journal
+    else if ([goalID isEqualToString:@"xj435NyIuW"])
+    {
+        if (done)
+        {
+            journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
+            journalState = M13CheckboxStateChecked;
+        }
+        else
+        {
+            journalImage = [UIImage imageNamed:@"JournalIcon.png"];
+            journalState = M13CheckboxStateUnchecked;
+        }
+    }
+    
+    // Goal is exercise
+    else if ([goalID isEqualToString:@"ZPHaJ8CjvS"])
+    {
+        if (done)
+        {
+            exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
+            exerciseState = M13CheckboxStateChecked;
+        }
+        else
+        {
+            exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
+            exerciseState = M13CheckboxStateUnchecked;
+        }
+    }
+    
+    // goal is nutrition
+    else if ([goalID isEqualToString:@"SAeeSNsDWM"])
+    {
+        if (done)
+        {
+            nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
+            nutritionState = M13CheckboxStateChecked;
+        }
+        else
+        {
+            nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
+            nutritionState = M13CheckboxStateUnchecked;
+        }
+    }
+
+}
+
+/*- (void)populateGoals
+{
+    // populate goals
+    UserSingleton *singleton = [UserSingleton sharedManager];
+    NSDictionary *userInfo = [singleton returnDictionary];
+    NSString *username = [userInfo objectForKey:@"username"];
+ 
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Getting your goals...";
+ 
     NSFetchRequest *goalFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
     [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"user == %@",username]];
  
@@ -263,10 +389,49 @@
     }onFailure:^(NSError *error) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-}
+}*/
 
 #pragma mark - Save Data methods
+- (void)saveGoalData:(NSString *)goalId checkState:(M13CheckboxState)checkState
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"UserLog"];
+    [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
+    [query whereKey:@"Goal" equalTo:goalId];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            // There should only be one result
+            if ([objects count] == 1)
+            {
+                PFObject *userLogObj = [objects objectAtIndex:0];
+                [userLogObj deleteInBackground];
+            }
+            // No objects. Therefore, not set
+            else if ([objects count] == 0)
+            {
+                PFObject *newUserLog = [PFObject objectWithClassName:@"UserLog"];
+                [newUserLog setObject:@"Step Completed" forKey:@"Event"];
+                [newUserLog setObject:goalId forKey:@"Goal"];
+                [newUserLog setObject:[[PFUser currentUser] objectId] forKey:@"UserID"];
+                [newUserLog saveInBackground];
+                NSLog(@"added new object!");
+            }
+            
+            // There was more than one result. Something happened.
+            else
+            {
+                NSLog(@"Error: More than one result.");
+            }
+        }
+        else
+        {
+            NSLog(@"Error: %@", error);
+        }
+    }];
+}
 
+/*
 - (void)saveGoalData:(NSString *)goalTitle checkState:(M13CheckboxState)checkState
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -309,13 +474,41 @@
         }
        else
        {
-           [self addDefaultGoals];
+           [self addDefaultGoals:[PFUser currentUser]];
        }
     } onFailure:^(NSError *error){
         
     }];
 }
-
+*/
+- (void)addDefaultGoals:(PFUser *)user
+{
+    NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
+    NSArray *fundamentals = [NSArray arrayWithObjects: @"SAeeSNsDWM", @"ZPHaJ8CjvS", @"xj435NyIuW", @"h3AOIcsUkd", nil];
+    
+    PFQuery *fundamentalsQuery = [PFQuery queryWithClassName:@"Goal"];
+    [fundamentalsQuery whereKey:@"objectId" containedIn:fundamentals];
+    
+    [fundamentalsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d objects", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                NSLog(@"%@", object.objectId);
+                [objectArray addObject:object];
+            }
+            NSLog(@"objectArray count: %d", [objectArray count]);
+            [user addObjectsFromArray:objectArray forKey:@"ThriveStreams"];
+            [user saveInBackground];
+            
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+/*
 - (void)addDefaultGoals
 {
     UserSingleton *singleton = [UserSingleton sharedManager];
@@ -385,7 +578,7 @@
         [errorAlertView show];
     }];
 
-}
+} */
 
 #pragma mark - UITableView Data Source delegates
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -408,6 +601,7 @@
         cell.goalLabel.text = @"Meditation";
         cell.checkbox.checkState = meditationState;
         cell.thriveImage.image = meditationImage;
+        cell.parseObjectID = @"h3AOIcsUkd";
     }
     
     // Journal row
@@ -416,6 +610,7 @@
         cell.goalLabel.text = @"Journal";
         cell.checkbox.checkState = journalState;
         cell.thriveImage.image = journalImage;
+        cell.parseObjectID = @"xj435NyIuW";
     }
 
     // Excercise row
@@ -424,6 +619,7 @@
         cell.goalLabel.text = @"Exercise";
         cell.checkbox.checkState = exerciseState;
         cell.thriveImage.image = exerciseImage;
+        cell.parseObjectID = @"ZPHaJ8CjvS";
     }
     
     // Nutrition row
@@ -432,6 +628,7 @@
         cell.goalLabel.text = @"Nutrition";
         cell.checkbox.checkState = nutritionState;
         cell.thriveImage.image = nutritionImage;
+        cell.parseObjectID = @"SAeeSNsDWM";
     }
 }
 
@@ -475,22 +672,39 @@
     [actionSheet showInView:self.view];
 }
 
+-(void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)subview;
+            button.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0f];
+        }
+    }
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     if  ([buttonTitle isEqualToString:@"Logout"])
     {
         //logout the user
-        [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result)
+        
+        [PFUser logOut];
+        NSLog(@"logout successful");
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate resetWindowToInitialView];
+        
+      /*  [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result)
          {
              //reset the view to initial
+             
              NSLog(@"logout successful");
              
              AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
              [appDelegate resetWindowToInitialView];
          } onFailure:^(NSError *error){
              NSLog(@"For some reason, couldn't log out. Here's the error: %@", error);
-         }];
+         }]; */
     }
     else if ([buttonTitle isEqualToString:@"Settings"])
     {

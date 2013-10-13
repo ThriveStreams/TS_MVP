@@ -8,16 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class SMClient;
+//@class SMClient;
 
 @interface LoginViewController : UIViewController <UITextFieldDelegate>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, weak) IBOutlet UITextField *emailField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordField;
 @property (nonatomic, weak) IBOutlet UIButton *forgotButton;
 
-@property (strong, nonatomic) SMClient *client;
+//@property (strong, nonatomic) SMClient *client;
 
 -(IBAction)loginUser:(id)sender;
 -(IBAction)cancel:(id)sender;

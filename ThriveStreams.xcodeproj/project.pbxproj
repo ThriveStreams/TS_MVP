@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E1453161805FCC10086A9C9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1453151805FCC10086A9C9 /* Parse.framework */; };
 		6E171B7B18026DF4005926DF /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E171B7A18026DF4005926DF /* libTestFlight.a */; };
 		6E171B7D18026E38005926DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E171B7C18026E37005926DF /* libz.dylib */; };
 		6E171B9918029CF9005926DF /* nutrition_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E171B9118029CF9005926DF /* nutrition_icon.png */; };
@@ -49,9 +50,9 @@
 		6E6DA75217FEA650001E9D66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6DA73117FEA650001E9D66 /* UIKit.framework */; };
 		6E6DA75A17FEA650001E9D66 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E6DA75817FEA650001E9D66 /* InfoPlist.strings */; };
 		6E6DA75C17FEA650001E9D66 /* ThriveStreamsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6DA75B17FEA650001E9D66 /* ThriveStreamsTests.m */; };
-		6E7E19BA1802C42100D7B49C /* TS_Logo_BPLAN2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */; };
 		6E7E19C71802C8BE00D7B49C /* 3dotButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19C51802C8BE00D7B49C /* 3dotButton@2x.png */; };
 		6E7E19C81802C8BE00D7B49C /* 3dotButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E7E19C61802C8BE00D7B49C /* 3dotButton.png */; };
+		6EA5CA571803641900F96C44 /* TS_Logo_BPLAN2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EA5CA561803641900F96C44 /* TS_Logo_BPLAN2.png */; };
 		6ED72A441801017A003B5ED5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED72A431801017A003B5ED5 /* User.m */; };
 		6ED72A471801017A003B5ED5 /* Goal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED72A461801017A003B5ED5 /* Goal.m */; };
 		6EE002A617FF75C800B804CD /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EE0028717FF75C800B804CD /* checkmark.png */; };
@@ -129,6 +130,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E1453151805FCC10086A9C9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		6E171B7718026DDD005926DF /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6E171B7818026DE4005926DF /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		6E171B7918026DED005926DF /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
@@ -178,9 +180,9 @@
 		6E6DA75717FEA650001E9D66 /* ThriveStreamsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ThriveStreamsTests-Info.plist"; sourceTree = "<group>"; };
 		6E6DA75917FEA650001E9D66 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6E6DA75B17FEA650001E9D66 /* ThriveStreamsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThriveStreamsTests.m; sourceTree = "<group>"; };
-		6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TS_Logo_BPLAN2.png; sourceTree = "<group>"; };
 		6E7E19C51802C8BE00D7B49C /* 3dotButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3dotButton@2x.png"; sourceTree = "<group>"; };
 		6E7E19C61802C8BE00D7B49C /* 3dotButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3dotButton.png; sourceTree = "<group>"; };
+		6EA5CA561803641900F96C44 /* TS_Logo_BPLAN2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TS_Logo_BPLAN2.png; sourceTree = "<group>"; };
 		6ED72A421801017A003B5ED5 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		6ED72A431801017A003B5ED5 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		6ED72A451801017A003B5ED5 /* Goal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Goal.h; sourceTree = "<group>"; };
@@ -320,12 +322,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EE002C917FF76AE00B804CD /* StoreKit.framework in Frameworks */,
 				6E171B7D18026E38005926DF /* libz.dylib in Frameworks */,
 				6E6DA73017FEA650001E9D66 /* CoreGraphics.framework in Frameworks */,
 				6E6DA72E17FEA650001E9D66 /* Foundation.framework in Frameworks */,
 				6E6DA73217FEA650001E9D66 /* UIKit.framework in Frameworks */,
 				6EE002E317FF772700B804CD /* CoreText.framework in Frameworks */,
 				6EE002E117FF771F00B804CD /* CoreData.framework in Frameworks */,
+				6E1453161805FCC10086A9C9 /* Parse.framework in Frameworks */,
 				6EE002E517FF77FC00B804CD /* FacebookSDK.framework in Frameworks */,
 				6EE002DF17FF771900B804CD /* Security.framework in Frameworks */,
 				6EE002DD17FF771200B804CD /* SystemConfiguration.framework in Frameworks */,
@@ -340,7 +344,6 @@
 				6EE002CF17FF76CF00B804CD /* CFNetwork.framework in Frameworks */,
 				6EE002CD17FF76C700B804CD /* libz.1.1.3.dylib in Frameworks */,
 				6EE002CB17FF76B700B804CD /* QuartzCore.framework in Frameworks */,
-				6EE002C917FF76AE00B804CD /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				6E171B7C18026E37005926DF /* libz.dylib */,
+				6E1453151805FCC10086A9C9 /* Parse.framework */,
 				6EE002E417FF77FC00B804CD /* FacebookSDK.framework */,
 				6EE002E217FF772700B804CD /* CoreText.framework */,
 				6EE002E017FF771F00B804CD /* CoreData.framework */,
@@ -505,6 +509,7 @@
 		6EE0028617FF75C800B804CD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6EA5CA561803641900F96C44 /* TS_Logo_BPLAN2.png */,
 				6E171BA11802A1FA005926DF /* CompletedIcon.png */,
 				6E171BA21802A1FA005926DF /* ExerciseIcon.png */,
 				6E171BA31802A1FA005926DF /* JournalIcon.png */,
@@ -525,7 +530,6 @@
 				6EE0028717FF75C800B804CD /* checkmark.png */,
 				6EE0028817FF75C800B804CD /* checkmark@2x.png */,
 				6EE0028917FF75C800B804CD /* defaultprofile.png */,
-				6E7E19B91802C42100D7B49C /* TS_Logo_BPLAN2.png */,
 				6EE0028A17FF75C800B804CD /* goal_icon.png */,
 				6EE0028B17FF75C800B804CD /* goal_icon@2x.png */,
 				6EE0028C17FF75C800B804CD /* goal_icon_gray.png */,
@@ -815,12 +819,12 @@
 				6E6DA74117FEA650001E9D66 /* Main_iPhone.storyboard in Resources */,
 				6EE002A717FF75C800B804CD /* checkmark@2x.png in Resources */,
 				6EE002B617FF75C800B804CD /* settingsicon@2x.png in Resources */,
+				6EA5CA571803641900F96C44 /* TS_Logo_BPLAN2.png in Resources */,
 				6E7E19C71802C8BE00D7B49C /* 3dotButton@2x.png in Resources */,
 				6EE002BC17FF75C800B804CD /* thriveButtonIcon@2x.png in Resources */,
 				6E171BBA1802B489005926DF /* OpenSans-Bold.ttf in Resources */,
 				6EE002B717FF75C800B804CD /* step_Icon.png in Resources */,
 				6EE002B917FF75C800B804CD /* step_icon_gray.png in Resources */,
-				6E7E19BA1802C42100D7B49C /* TS_Logo_BPLAN2.png in Resources */,
 				6E171BAA1802A1FA005926DF /* NutritionIcon.png in Resources */,
 				6E171BBE1802B489005926DF /* OpenSans-Light.ttf in Resources */,
 				6E171BB71802B489005926DF /* OpenSans-ExtraBoldItalic.ttf in Resources */,

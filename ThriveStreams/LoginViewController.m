@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "FlatUIHelper.h"
-#import "StackMob.h"
+#import <Parse/Parse.h>
 #import "User.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
@@ -24,13 +24,13 @@
 @end
 
 @implementation LoginViewController
-
+/*
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize client = _client;
 
 - (AppDelegate *)appDelegate {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
+} */
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -47,8 +47,8 @@
     [super viewDidLoad];
     
     // set up core data and stackmob
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
-    self.client = [SMClient defaultClient];
+ //   self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+ //   self.client = [SMClient defaultClient];
     
     // Set up colors
     //   NSString *fontName = @"OpenSans-Light";
@@ -64,12 +64,17 @@
     
     self.navigationController.navigationBar.topItem.title = @"Login";
     
-    NSDictionary* navBarDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.4 alpha:1.0], UITextAttributeTextColor,
-                                      [UIColor clearColor], UITextAttributeTextShadowColor,
-                                      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-                                      [UIFont fontWithName:@"OpenSans-Light" size:26.0], UITextAttributeFont, nil];
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:navBarDictionary];
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor colorWithWhite:0.4 alpha:1.0],
+      UITextAttributeTextColor,
+      [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0],
+      UITextAttributeTextShadowColor,
+      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
+      UITextAttributeTextShadowOffset,
+      [UIFont fontWithName:@"OpenSans" size:0.0],
+      UITextAttributeFont,
+      nil]];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Let's Do It!"
                                                                               style:UIBarButtonItemStylePlain
@@ -79,12 +84,12 @@
     NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
                                              [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                             [UIFont fontWithName:@"OpenSans-Light" size:24.0], UITextAttributeFont,
+                                             [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
                                              nil];
     NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                               [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                               [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                              [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+                                              [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
                                               nil];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
@@ -99,7 +104,7 @@
     NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
      [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-     [UIFont fontWithName:@"OpenSans-Light.tff" size:24.0], UITextAttributeFont,
+     [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
      nil];
     
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
@@ -113,6 +118,7 @@
     self.emailField.layer.cornerRadius = 3.0f;
     self.emailField.placeholder = @"Email Address";
     self.emailField.leftViewMode = UITextFieldViewModeAlways;
+    self.emailField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.emailField.leftView = leftView1;
     self.emailField.delegate = self;
@@ -120,6 +126,7 @@
     self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     self.passwordField.layer.cornerRadius = 3.0f;
     self.passwordField.placeholder = @"Password";
+    self.passwordField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.passwordField.leftView = leftView2;
@@ -128,7 +135,7 @@
     // Configure the forgotbutton to look like normal text
     self.forgotButton.backgroundColor = [UIColor clearColor];
     [self.forgotButton setTitle:@"Forgot Your Details?" forState:UIControlStateNormal];
-    [self.forgotButton.titleLabel setFont:[UIFont systemFontOfSize:11.0f]];
+    [self.forgotButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans" size:11.0f]];
     [self.forgotButton setTitleColor:greyColor forState:UIControlStateNormal];
     [self.forgotButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     
@@ -214,49 +221,18 @@
 
 - (IBAction)loginUser:(id)sender
 {
-    [self.view endEditing:YES];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Loading Thrivestreams...";
-    
-    [self.client loginWithUsername:[self.emailField.text lowercaseString] password:self.passwordField.text onSuccess:^(NSDictionary *results) {
-        
-        NSLog(@"Login Success %@",results);
-        if ([[[self appDelegate] client] isLoggedIn]) {
-            NSLog(@"Logged in");
-        }
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
-        //store into singleton
-        UserSingleton *singleton = [UserSingleton sharedManager];
-        singleton = [singleton initWithDictionary:results];
-        
-    /*    NSURL *imageURL = [NSURL URLWithString:[results objectForKey:@"userimage"]];
-        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-        UIImage *image = [UIImage imageWithData:imageData];
-        if (image)
-        {
-            singleton = [singleton initWithDictionaryAndImage:results image:image];
-        }
-        else
-        {
-            singleton = [singleton initWithDictionaryAndImage:results image:[UIImage imageNamed:@"defaultprofile.png"]];
-        } */
-        
-        
-        [self performSegueWithIdentifier:@"toMainSegueFromLogin" sender:self];
-        
-        
-    } onFailure:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSLog(@"Login Fail: %@",error);
-        NSString *errorString = [error description];
-        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [errorAlertView show];
-    }];
-    
+    [PFUser logInWithUsernameInBackground:_emailField.text password:_passwordField.text
+                                    block:^(PFUser *user, NSError *error) {
+            if (user) {
+            // Do stuff after successful login.
+            [self performSegueWithIdentifier:@"toMainSegueFromLogin" sender:self];
+            } else {
+            // The login failed. Check error to see why.
+                NSString *errorString = [error userInfo][@"error"];
+                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [errorAlertView show];
+            }
+            }];
 }
 
 #pragma mark - UITextFieldDelegates

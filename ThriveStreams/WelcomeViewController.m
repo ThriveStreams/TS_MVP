@@ -35,14 +35,14 @@
     
     self.loginButton.backgroundColor = greenColor;
     self.loginButton.layer.cornerRadius = 3.0f;
-    self.loginButton.titleLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.loginButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:18.0f];
     [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
     [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.loginButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     
     self.joinButton.backgroundColor = greyColor;
     self.joinButton.layer.cornerRadius = 3.0f;
-    self.joinButton.titleLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.joinButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:18.0f];
     [self.joinButton setTitle:@"Join" forState:UIControlStateNormal];
     [self.joinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.joinButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
