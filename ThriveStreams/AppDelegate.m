@@ -41,6 +41,12 @@
     
 }
 
+// Allow for facebook integration
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
@@ -52,6 +58,8 @@
     [Parse setApplicationId:@"Fa9APVfjcdd0Qs4gQgRbHdJ2hDNZgntu057M26bA"
                   clientKey:@"j0uOIbfelOwwUGeifHFPMEc5XnaYHw6tJIvQBO72"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [PFFacebookUtils initializeFacebook];
     
     [TestFlight takeOff:@"e327df57-ff21-4bdf-8732-deac5352b1ef"];
     

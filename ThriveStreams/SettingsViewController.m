@@ -48,7 +48,7 @@
     
     NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
     NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
-    NSString *username =[[PFUser currentUser] username];
+    NSString *email = [PFUser currentUser].email;
     
     // setup text fields
     self.firstNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -73,7 +73,7 @@
     
     self.emailField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     self.emailField.layer.cornerRadius = 3.0f;
-    self.emailField.text = username;
+    self.emailField.text = email;
     self.emailField.placeholder = @"Email Address";
     self.emailField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
@@ -81,7 +81,7 @@
     self.emailField.leftView = leftView3;
     self.emailField.delegate = self;
     
-    self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+ //   self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     self.passwordField.layer.cornerRadius = 3.0f;
     self.passwordField.placeholder = @"New Password";
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
@@ -90,7 +90,7 @@
     self.passwordField.leftView = leftView4;
     self.passwordField.delegate = self;
     
-    self.confirmPasswordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+ //   self.confirmPasswordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     self.confirmPasswordField.layer.cornerRadius = 3.0f;
     self.confirmPasswordField.placeholder = @"Confirm New Password";
     self.confirmPasswordField.leftViewMode = UITextFieldViewModeAlways;
@@ -98,6 +98,26 @@
     self.confirmPasswordField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
     self.confirmPasswordField.leftView = leftView5;
     self.confirmPasswordField.delegate = self;
+    
+    // disable change password if logged in with facebook
+    if ([PFFacebookUtils isLinkedWithUser:[PFUser currentUser]])
+    {
+        self.passwordField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        self.passwordField.enabled = NO;
+        
+        self.confirmPasswordField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+        self.confirmPasswordField.enabled = NO;
+        
+        
+    }
+    else
+    {
+        self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        self.passwordField.enabled = YES;
+        
+        self.confirmPasswordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        self.confirmPasswordField.enabled = YES;
+    }
     
     // set up navigation Bar
     self.navigationController.navigationBar.topItem.title = @"Settings";

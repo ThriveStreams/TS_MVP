@@ -10,7 +10,12 @@
 
 @interface WelcomeViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+
+- (IBAction)loginWithFacebook:(id)sender;
 
 @end

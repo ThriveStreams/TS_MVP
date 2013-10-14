@@ -194,6 +194,12 @@
     NSArray *goalArray = PFUser.currentUser[@"ThriveStreams"];
     NSMutableArray *goalIDArray = [[NSMutableArray alloc] initWithCapacity:[goalArray count]];
     
+    //user has no goals set, so add the default
+    if ([goalArray count] == 0)
+    {
+        [self addDefaultGoals:[PFUser currentUser]];
+    }
+    
     // copy the goal IDs
     for (PFObject *goal in goalArray)
     {
@@ -223,27 +229,6 @@
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-
-    /*
-    if (goalArray != nil && [goalArray count] > 0)
-    {
-        for (PFObject *goalObject in goalArray)
-        {
-            NSLog(@"userID: %@", [[PFUser currentUser] objectId]);
-                                
-            PFQuery *query =[PFQuery queryWithClassName:@"UserLog"];
-            [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
-            [query whereKey:@"Goal" equalTo:[goalObject objectId]];
-        
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                NSLog(@"objects count: %d", [objects count]);
-            }];
-        }
-    }
-    else
-    {
-        [self addDefaultGoals:[PFUser currentUser]];
-    } */
 }
 
 -(void)setCheckboxForGoalID:(NSString *)goalID isDone:(BOOL)done
@@ -311,86 +296,6 @@
 
 }
 
-/*- (void)populateGoals
-{
-    // populate goals
-    UserSingleton *singleton = [UserSingleton sharedManager];
-    NSDictionary *userInfo = [singleton returnDictionary];
-    NSString *username = [userInfo objectForKey:@"username"];
- 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Getting your goals...";
- 
-    NSFetchRequest *goalFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
-    [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"user == %@",username]];
- 
-    [self.managedObjectContext executeFetchRequest:goalFetch onSuccess:^(NSArray *results) {
-        if ([results count] > 0) {
-            for (int index = 0; index < [results count]; index++)
-            {
-                Goal *goal = [results objectAtIndex:index];
-                if ([goal.title isEqualToString:@"Meditation"])
-                {
-                    if ([goal.isdone boolValue])
-                    {
-                        meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
-                        meditationState = M13CheckboxStateChecked;
-                    }
-                    else
-                    {
-                        meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
-                        meditationState = M13CheckboxStateUnchecked;
-                    }
-                }
-                else if ([goal.title isEqualToString:@"Journal"])
-                {
-                    if ([goal.isdone boolValue])
-                    {
-                        journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
-                        journalState = M13CheckboxStateChecked;
-                    }
-                    else
-                    {
-                        journalImage = [UIImage imageNamed:@"JournalIcon.png"];
-                        journalState = M13CheckboxStateUnchecked;
-                    }
-                }
-                else if ([goal.title isEqualToString:@"Exercise"])
-                {
-                    if ([goal.isdone boolValue])
-                    {
-                        exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
-                        exerciseState = M13CheckboxStateChecked;
-                    }
-                    else
-                    {
-                        exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
-                        exerciseState = M13CheckboxStateUnchecked;
-                    }
-                }
-                else if ([goal.title isEqualToString:@"Nutrition"])
-                {
-                    if ([goal.isdone boolValue])
-                    {
-                        nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
-                        nutritionState = M13CheckboxStateChecked;
-                    }
-                    else
-                    {
-                        nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
-                        nutritionState = M13CheckboxStateUnchecked;
-                    }
-                }
-            }
-        }
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [_tableView reloadData];
-    }onFailure:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
-}*/
-
 #pragma mark - Save Data methods
 - (void)saveGoalData:(NSString *)goalId checkState:(M13CheckboxState)checkState
 {
@@ -431,56 +336,6 @@
     }];
 }
 
-/*
-- (void)saveGoalData:(NSString *)goalTitle checkState:(M13CheckboxState)checkState
-{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Updating goal...";
-    
-    UserSingleton *singleton = [UserSingleton sharedManager];
-    NSDictionary *userInfo = [singleton returnDictionary];
-    NSString *username = [userInfo objectForKey:@"username"];
-    
-    NSFetchRequest *goalFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
-    [goalFetch setPredicate:[NSPredicate predicateWithFormat:@"(title == %@) AND (user == %@)", goalTitle, username]];
-    
-    [self.managedObjectContext executeFetchRequest:goalFetch onSuccess:^(NSArray *results) {
-        if ([results count] > 0) {
-            Goal *goal = [results objectAtIndex:0];
-            if (checkState == M13CheckboxStateChecked)
-            {
-                [goal setValue:[NSNumber numberWithBool:YES] forKey:@"isdone"];
-            }
-            else
-            {
-                [goal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            }
-            
-            [self.managedObjectContext saveOnSuccess:^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-                hud.mode = MBProgressHUDModeCustomView;
-                hud.labelText = @"Goal updated!";
-                [hud hide:YES afterDelay:1];
-                
-                NSLog(@"success");
-            } onFailure:^(NSError *error) {
-                NSLog(@"There was an error! %@", error);
-            }];
-            
-        }
-       else
-       {
-           [self addDefaultGoals:[PFUser currentUser]];
-       }
-    } onFailure:^(NSError *error){
-        
-    }];
-}
-*/
 - (void)addDefaultGoals:(PFUser *)user
 {
     NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
@@ -508,77 +363,6 @@
         }
     }];
 }
-/*
-- (void)addDefaultGoals
-{
-    UserSingleton *singleton = [UserSingleton sharedManager];
-    NSDictionary *userInfo = [singleton returnDictionary];
-    NSString *username = [userInfo objectForKey:@"username"];
-    
-    NSFetchRequest *userFetch = [[NSFetchRequest alloc] initWithEntityName:@"Goal"];
-    [userFetch setPredicate:[NSPredicate predicateWithFormat:@"User == %@", username]];
-    
-    [self.managedObjectContext executeFetchRequest:userFetch onSuccess:^(NSArray *results) {
-        if ([results count] > 0) {
-            User *currentUser = (User *)[results objectAtIndex:0];
-            
-            Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [meditationGoal setValue:@"Meditation" forKey:@"title"];
-            [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
-            
-            Goal *journalGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [journalGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [journalGoal setValue:@"Journal" forKey:@"title"];
-            [journalGoal setValue:[journalGoal assignObjectId] forKey:[journalGoal primaryKeyField]];
-            
-            Goal *exerciseGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [exerciseGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [exerciseGoal setValue:@"Exercise" forKey:@"title"];
-            [exerciseGoal setValue:[exerciseGoal assignObjectId] forKey:[exerciseGoal primaryKeyField]];
-            
-            Goal *nutritionGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [nutritionGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [nutritionGoal setValue:@"Nutrition" forKey:@"title"];
-            [nutritionGoal setValue:[nutritionGoal assignObjectId] forKey:[nutritionGoal primaryKeyField]];
-            
-            NSError *error = nil;
-            if (![self.managedObjectContext saveAndWait:&error]) {
-                NSLog(@"There was an error! %@", error);
-            }
-            else {
-                NSLog(@"Created goals with goals!");
-            }
-            
-            [currentUser addGoalObject:meditationGoal];
-            [currentUser addGoalObject:journalGoal];
-            [currentUser addGoalObject:exerciseGoal];
-            [currentUser addGoalObject:nutritionGoal];
-            
-            [self.managedObjectContext saveOnSuccess:^{
-                
-                NSLog(@"goals added to current user");
-                
-            } onFailure:^(NSError *error) {
-                NSLog(@"Login Fail: %@",error);
-                NSString *errorString = [error description];
-                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                [errorAlertView show];
-            }];
-        }
-    }
-    onFailure:^(NSError *error){
-        NSLog(@"Login Fail: %@",error);
-        NSString *errorString = [error description];
-        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [errorAlertView show];
-    }];
-
-} */
 
 #pragma mark - UITableView Data Source delegates
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

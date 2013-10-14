@@ -25,14 +25,6 @@
 
 @implementation JoinViewController
 
-//@synthesize managedObjectContext = _managedObjectContext;
-//@synthesize client = _client;
-/*
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-} */
-
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -324,98 +316,6 @@
     }];
 }
 
-/*-(IBAction)addUser:(id)sender
-{
-    [self.view endEditing:YES];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Joining Thrivestreams...";
-    
-    //User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
-    User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
-    
-    [newUser setValue:[self.emailField.text lowercaseString] forKey:[newUser primaryKeyField]];
-    [newUser setValue:self.firstNameField.text forKeyPath:@"firstname"];
-    [newUser setValue:self.lastNameField.text forKeyPath:@"lastname"];
-    [newUser setPassword:self.passwordField.text]; */
-    
- /*   Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-    
-    [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-    [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
-    
-    Goal *journalGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-    
-    [journalGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-    [journalGoal setValue:@"Journal" forKey:@"title"];
-    [journalGoal setValue:[journalGoal assignObjectId] forKey:[journalGoal primaryKeyField]];
-    
-    Goal *exerciseGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-    
-    [exerciseGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-    [exerciseGoal setValue:@"Exercise" forKey:@"title"];
-    [exerciseGoal setValue:[exerciseGoal assignObjectId] forKey:[exerciseGoal primaryKeyField]];
-    
-    Goal *nutritionGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-    
-    [nutritionGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-    [nutritionGoal setValue:@"Nutrition" forKey:@"title"];
-    [nutritionGoal setValue:[nutritionGoal assignObjectId] forKey:[nutritionGoal primaryKeyField]];
-    
-    NSError *error = nil;
-    if (![self.managedObjectContext saveAndWait:&error]) {
-        NSLog(@"There was an error! %@", error);
-    }
-    else {
-        NSLog(@"New user created with goals!");
-    }
-    
-    [newUser addGoalObject:meditationGoal];
-    [newUser addGoalObject:journalGoal];
-    [newUser addGoalObject:exerciseGoal];
-    [newUser addGoalObject:nutritionGoal];*/
-
- /*   [self.managedObjectContext saveOnSuccess:^{
-        
-        NSLog(@"New user created yo!"); */
-        
-        //set up  welcome alert
-        /*
-         * A no internet connect error
-         *
-         Login Fail: Error Domain=SMError Code=-105 "The Internet connection appears to be offline." UserInfo=0x9c635b0 {NSErrorFailingURLStringKey=https://api.stackmob.com/user/accessToken, NSErrorFailingURLKey=https://api.stackmob.com/user/accessToken, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x982f040 "The Internet connection appears to be offline."}
-         */
-        
-  /*      [self.client loginWithUsername:[self.emailField.text lowercaseString] password:self.passwordField.text onSuccess:^(NSDictionary *results) {
-            
-            NSLog(@"Login Success %@",results);
-            if ([[[self appDelegate] client] isLoggedIn]) {
-                NSLog(@"Logged in");
-            }
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            //store into singleton
-            UserSingleton *singleton = [UserSingleton sharedManager];
-            singleton = [singleton initWithDictionary:results];
-            
-            [self addDefaultGoals];
-            
-        } onFailure:^(NSError *error) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            NSLog(@"Login Fail: %@",error);
-        }];
-        
-    } onFailure:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [self.managedObjectContext deleteObject:newUser];
-        [newUser removePassword];
-        NSLog(@"Error: %@", error);
-        NSString *errorString = [error description];
-        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [errorAlertView show];
-    }];
-} */
-
 - (void)addDefaultGoals:(PFUser *)user
 {
     NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
@@ -435,6 +335,7 @@
             }
             NSLog(@"objectArray count: %d", [objectArray count]);
             [[PFUser currentUser] setObject:objectArray forKey:@"ThriveStreams"];
+            [[PFUser currentUser] saveInBackground];
             
         } else {
             // Log details of the failure
@@ -442,80 +343,6 @@
         }
     }];
 }
-
-/*
-- (void)addDefaultGoals
-{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Setting up goals...";
-    NSFetchRequest *userFetch = [[NSFetchRequest alloc] initWithEntityName:@"User"];
-    [userFetch setPredicate:[NSPredicate predicateWithFormat:@"username == %@", _emailField.text]];
-    
-    [self.managedObjectContext executeFetchRequest:userFetch onSuccess:^(NSArray *results) {
-        if ([results count] > 0) {
-            User *currentUser = (User *)[results objectAtIndex:0];
-            
-            Goal *meditationGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [meditationGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [meditationGoal setValue:@"Meditation" forKey:@"title"];
-            [meditationGoal setValue:[meditationGoal assignObjectId] forKey:[meditationGoal primaryKeyField]];
-            
-            Goal *journalGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [journalGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [journalGoal setValue:@"Journal" forKey:@"title"];
-            [journalGoal setValue:[journalGoal assignObjectId] forKey:[journalGoal primaryKeyField]];
-            
-            Goal *exerciseGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [exerciseGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [exerciseGoal setValue:@"Exercise" forKey:@"title"];
-            [exerciseGoal setValue:[exerciseGoal assignObjectId] forKey:[exerciseGoal primaryKeyField]];
-            
-            Goal *nutritionGoal = [NSEntityDescription insertNewObjectForEntityForName:@"Goal" inManagedObjectContext:self.managedObjectContext];
-            
-            [nutritionGoal setValue:[NSNumber numberWithBool:NO] forKey:@"isdone"];
-            [nutritionGoal setValue:@"Nutrition" forKey:@"title"];
-            [nutritionGoal setValue:[nutritionGoal assignObjectId] forKey:[nutritionGoal primaryKeyField]];
-            
-            NSError *error = nil;
-            if (![self.managedObjectContext saveAndWait:&error]) {
-                NSLog(@"There was an error! %@", error);
-            }
-            else {
-                NSLog(@"Created goals with goals!");
-            }
-            
-            [currentUser addGoalObject:meditationGoal];
-            [currentUser addGoalObject:journalGoal];
-            [currentUser addGoalObject:exerciseGoal];
-            [currentUser addGoalObject:nutritionGoal];
-            
-            [self.managedObjectContext saveOnSuccess:^{
-                
-                NSLog(@"goals added to current user");
-                [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-            } onFailure:^(NSError *error) {
-                NSLog(@"Login Fail: %@",error);
-                NSString *errorString = [error description];
-                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                [errorAlertView show];
-            }];
-        }
-    }
-            onFailure:^(NSError *error){
-                NSLog(@"Login Fail: %@",error);
-                NSString *errorString = [error description];
-                UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                [errorAlertView show];
-            }];
-    
-}
-*/
 
 // Cancel the current view
 - (IBAction)cancel:(id)sender

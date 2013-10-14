@@ -34,6 +34,7 @@
 		6E171BBF1802B489005926DF /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB41802B489005926DF /* OpenSans-LightItalic.ttf */; };
 		6E171BC01802B489005926DF /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */; };
 		6E171BC11802B489005926DF /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */; };
+		6E605F09180B722F00FE62D6 /* FACEBOLF.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 6E605F08180B722F00FE62D6 /* FACEBOLF.OTF */; };
 		6E6987FB1801E08100216E61 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987F91801E08100216E61 /* 37x-Checkmark.png */; };
 		6E6987FC1801E08100216E61 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */; };
 		6E6DA72E17FEA650001E9D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6DA72D17FEA650001E9D66 /* Foundation.framework */; };
@@ -160,6 +161,7 @@
 		6E171BB41802B489005926DF /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		6E605F08180B722F00FE62D6 /* FACEBOLF.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = FACEBOLF.OTF; sourceTree = "<group>"; };
 		6E6987F91801E08100216E61 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		6E6DA72A17FEA650001E9D66 /* ThriveStreams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThriveStreams.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 				6E171BAC1802B489005926DF /* OpenSans-ExtraBoldItalic.ttf */,
 				6E171BAD1802B489005926DF /* OpenSans-Regular.ttf */,
 				6E171BAE1802B489005926DF /* Lato-Black.ttf */,
+				6E605F08180B722F00FE62D6 /* FACEBOLF.OTF */,
 				6E171BAF1802B489005926DF /* OpenSans-Bold.ttf */,
 				6E171BB01802B489005926DF /* OpenSans-BoldItalic.ttf */,
 				6E171BB11802B489005926DF /* OpenSans-ExtraBold.ttf */,
@@ -809,6 +812,7 @@
 				6EE002AA17FF75C800B804CD /* goal_icon@2x.png in Resources */,
 				6EE002A917FF75C800B804CD /* goal_icon.png in Resources */,
 				6EE002C417FF75C800B804CD /* Xbutton@2x.png in Resources */,
+				6E605F09180B722F00FE62D6 /* FACEBOLF.OTF in Resources */,
 				6EE002AE17FF75C800B804CD /* logouticon.png in Resources */,
 				6EE002B017FF75C800B804CD /* menuButton@2x.png in Resources */,
 				6E6DA74917FEA650001E9D66 /* Images.xcassets in Resources */,
