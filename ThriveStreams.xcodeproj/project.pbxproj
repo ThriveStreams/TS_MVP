@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E100D441814DC7300DEF6A2 /* aim.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D3B1814DC7300DEF6A2 /* aim.png */; };
+		6E100D451814DC7300DEF6A2 /* digg.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D3C1814DC7300DEF6A2 /* digg.png */; };
+		6E100D461814DC7300DEF6A2 /* Evernote.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D3D1814DC7300DEF6A2 /* Evernote.png */; };
+		6E100D471814DC7300DEF6A2 /* FaceBook.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D3E1814DC7300DEF6A2 /* FaceBook.png */; };
+		6E100D481814DC7300DEF6A2 /* Foursquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D3F1814DC7300DEF6A2 /* Foursquare.png */; };
+		6E100D491814DC7300DEF6A2 /* google_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D401814DC7300DEF6A2 /* google_square.png */; };
+		6E100D4A1814DC7300DEF6A2 /* mapmyrun.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D411814DC7300DEF6A2 /* mapmyrun.png */; };
+		6E100D4B1814DC7300DEF6A2 /* reddit.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D421814DC7300DEF6A2 /* reddit.png */; };
+		6E100D4C1814DC7300DEF6A2 /* Twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E100D431814DC7300DEF6A2 /* Twitter.png */; };
 		6E1453161805FCC10086A9C9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1453151805FCC10086A9C9 /* Parse.framework */; };
 		6E171B7B18026DF4005926DF /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E171B7A18026DF4005926DF /* libTestFlight.a */; };
 		6E171B7D18026E38005926DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E171B7C18026E37005926DF /* libz.dylib */; };
@@ -35,6 +44,11 @@
 		6E171BC01802B489005926DF /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */; };
 		6E171BC11802B489005926DF /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */; };
 		6E605F09180B722F00FE62D6 /* FACEBOLF.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 6E605F08180B722F00FE62D6 /* FACEBOLF.OTF */; };
+		6E605F0C180BC89300FE62D6 /* GoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E605F0B180BC89300FE62D6 /* GoalViewController.m */; };
+		6E605F10180BCBED00FE62D6 /* WhyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E605F0F180BCBED00FE62D6 /* WhyView.m */; };
+		6E605F13180BCC4700FE62D6 /* ToolsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E605F12180BCC4700FE62D6 /* ToolsView.m */; };
+		6E605F16180BCC6500FE62D6 /* LinksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E605F15180BCC6500FE62D6 /* LinksView.m */; };
+		6E605F19180BCC8800FE62D6 /* StatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E605F18180BCC8800FE62D6 /* StatsView.m */; };
 		6E6987FB1801E08100216E61 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987F91801E08100216E61 /* 37x-Checkmark.png */; };
 		6E6987FC1801E08100216E61 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */; };
 		6E6DA72E17FEA650001E9D66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E6DA72D17FEA650001E9D66 /* Foundation.framework */; };
@@ -131,6 +145,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E100D3B1814DC7300DEF6A2 /* aim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aim.png; sourceTree = "<group>"; };
+		6E100D3C1814DC7300DEF6A2 /* digg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = digg.png; sourceTree = "<group>"; };
+		6E100D3D1814DC7300DEF6A2 /* Evernote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Evernote.png; sourceTree = "<group>"; };
+		6E100D3E1814DC7300DEF6A2 /* FaceBook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaceBook.png; sourceTree = "<group>"; };
+		6E100D3F1814DC7300DEF6A2 /* Foursquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foursquare.png; sourceTree = "<group>"; };
+		6E100D401814DC7300DEF6A2 /* google_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_square.png; sourceTree = "<group>"; };
+		6E100D411814DC7300DEF6A2 /* mapmyrun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapmyrun.png; sourceTree = "<group>"; };
+		6E100D421814DC7300DEF6A2 /* reddit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reddit.png; sourceTree = "<group>"; };
+		6E100D431814DC7300DEF6A2 /* Twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter.png; sourceTree = "<group>"; };
 		6E1453151805FCC10086A9C9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		6E171B7718026DDD005926DF /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6E171B7818026DE4005926DF /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
@@ -162,6 +185,16 @@
 		6E171BB51802B489005926DF /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
 		6E605F08180B722F00FE62D6 /* FACEBOLF.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = FACEBOLF.OTF; sourceTree = "<group>"; };
+		6E605F0A180BC89300FE62D6 /* GoalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalViewController.h; sourceTree = "<group>"; };
+		6E605F0B180BC89300FE62D6 /* GoalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoalViewController.m; sourceTree = "<group>"; };
+		6E605F0E180BCBED00FE62D6 /* WhyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhyView.h; sourceTree = "<group>"; };
+		6E605F0F180BCBED00FE62D6 /* WhyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhyView.m; sourceTree = "<group>"; };
+		6E605F11180BCC4700FE62D6 /* ToolsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolsView.h; sourceTree = "<group>"; };
+		6E605F12180BCC4700FE62D6 /* ToolsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolsView.m; sourceTree = "<group>"; };
+		6E605F14180BCC6500FE62D6 /* LinksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksView.h; sourceTree = "<group>"; };
+		6E605F15180BCC6500FE62D6 /* LinksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksView.m; sourceTree = "<group>"; };
+		6E605F17180BCC8800FE62D6 /* StatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsView.h; sourceTree = "<group>"; };
+		6E605F18180BCC8800FE62D6 /* StatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsView.m; sourceTree = "<group>"; };
 		6E6987F91801E08100216E61 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		6E6987FA1801E08100216E61 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		6E6DA72A17FEA650001E9D66 /* ThriveStreams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThriveStreams.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -362,6 +395,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E100D3A1814DC7300DEF6A2 /* ExternalAppIconImages */ = {
+			isa = PBXGroup;
+			children = (
+				6E100D3B1814DC7300DEF6A2 /* aim.png */,
+				6E100D3C1814DC7300DEF6A2 /* digg.png */,
+				6E100D3D1814DC7300DEF6A2 /* Evernote.png */,
+				6E100D3E1814DC7300DEF6A2 /* FaceBook.png */,
+				6E100D3F1814DC7300DEF6A2 /* Foursquare.png */,
+				6E100D401814DC7300DEF6A2 /* google_square.png */,
+				6E100D411814DC7300DEF6A2 /* mapmyrun.png */,
+				6E100D421814DC7300DEF6A2 /* reddit.png */,
+				6E100D431814DC7300DEF6A2 /* Twitter.png */,
+			);
+			path = ExternalAppIconImages;
+			sourceTree = "<group>";
+		};
 		6E171B7618026DCF005926DF /* TestFlight */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +439,21 @@
 				6E171BB61802B489005926DF /* OpenSans-SemiboldItalic.ttf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		6E605F0D180BCBBA00FE62D6 /* Goal_Items */ = {
+			isa = PBXGroup;
+			children = (
+				6E605F0E180BCBED00FE62D6 /* WhyView.h */,
+				6E605F0F180BCBED00FE62D6 /* WhyView.m */,
+				6E605F11180BCC4700FE62D6 /* ToolsView.h */,
+				6E605F12180BCC4700FE62D6 /* ToolsView.m */,
+				6E605F14180BCC6500FE62D6 /* LinksView.h */,
+				6E605F15180BCC6500FE62D6 /* LinksView.m */,
+				6E605F17180BCC8800FE62D6 /* StatsView.h */,
+				6E605F18180BCC8800FE62D6 /* StatsView.m */,
+			);
+			name = Goal_Items;
 			sourceTree = "<group>";
 		};
 		6E6DA72117FEA650001E9D66 = {
@@ -449,6 +513,9 @@
 				6EE0033817FF813700B804CD /* ThriveButton */,
 				6E6DA73C17FEA650001E9D66 /* AppDelegate.h */,
 				6E6DA73D17FEA650001E9D66 /* AppDelegate.m */,
+				6E605F0A180BC89300FE62D6 /* GoalViewController.h */,
+				6E605F0B180BC89300FE62D6 /* GoalViewController.m */,
+				6E605F0D180BCBBA00FE62D6 /* Goal_Items */,
 				6EE002C517FF762600B804CD /* WelcomeViewController.h */,
 				6EE002C617FF762600B804CD /* WelcomeViewController.m */,
 				6EE0034C17FF915A00B804CD /* SettingsViewController.h */,
@@ -512,6 +579,7 @@
 		6EE0028617FF75C800B804CD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6E100D3A1814DC7300DEF6A2 /* ExternalAppIconImages */,
 				6EA5CA561803641900F96C44 /* TS_Logo_BPLAN2.png */,
 				6E171BA11802A1FA005926DF /* CompletedIcon.png */,
 				6E171BA21802A1FA005926DF /* ExerciseIcon.png */,
@@ -794,6 +862,7 @@
 				6EE002B317FF75C800B804CD /* repeat_icon.png in Resources */,
 				6EE002A617FF75C800B804CD /* checkmark.png in Resources */,
 				6E171B9D18029CF9005926DF /* exercise_icon.png in Resources */,
+				6E100D471814DC7300DEF6A2 /* FaceBook.png in Resources */,
 				6EE002B117FF75C800B804CD /* reminder_icon.png in Resources */,
 				6EE002AB17FF75C800B804CD /* goal_icon_gray.png in Resources */,
 				6EE002B517FF75C800B804CD /* settingsicon.png in Resources */,
@@ -810,6 +879,7 @@
 				6EE002AC17FF75C800B804CD /* goal_icon_gray@2x.png in Resources */,
 				6EE002BD17FF75C800B804CD /* thrivestreamsnav.png in Resources */,
 				6EE002AA17FF75C800B804CD /* goal_icon@2x.png in Resources */,
+				6E100D461814DC7300DEF6A2 /* Evernote.png in Resources */,
 				6EE002A917FF75C800B804CD /* goal_icon.png in Resources */,
 				6EE002C417FF75C800B804CD /* Xbutton@2x.png in Resources */,
 				6E605F09180B722F00FE62D6 /* FACEBOLF.OTF in Resources */,
@@ -825,20 +895,24 @@
 				6EE002B617FF75C800B804CD /* settingsicon@2x.png in Resources */,
 				6EA5CA571803641900F96C44 /* TS_Logo_BPLAN2.png in Resources */,
 				6E7E19C71802C8BE00D7B49C /* 3dotButton@2x.png in Resources */,
+				6E100D4A1814DC7300DEF6A2 /* mapmyrun.png in Resources */,
 				6EE002BC17FF75C800B804CD /* thriveButtonIcon@2x.png in Resources */,
 				6E171BBA1802B489005926DF /* OpenSans-Bold.ttf in Resources */,
 				6EE002B717FF75C800B804CD /* step_Icon.png in Resources */,
 				6EE002B917FF75C800B804CD /* step_icon_gray.png in Resources */,
 				6E171BAA1802A1FA005926DF /* NutritionIcon.png in Resources */,
+				6E100D4C1814DC7300DEF6A2 /* Twitter.png in Resources */,
 				6E171BBE1802B489005926DF /* OpenSans-Light.ttf in Resources */,
 				6E171BB71802B489005926DF /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				6E171BBB1802B489005926DF /* OpenSans-BoldItalic.ttf in Resources */,
+				6E100D441814DC7300DEF6A2 /* aim.png in Resources */,
 				6EE002BB17FF75C800B804CD /* thriveButtonIcon.png in Resources */,
 				6EE002B217FF75C800B804CD /* reminder_icon@2x.png in Resources */,
 				6E171B9918029CF9005926DF /* nutrition_icon.png in Resources */,
 				6E171BA71802A1FA005926DF /* ExerciseIcon.png in Resources */,
 				6E171B9F18029CF9005926DF /* meditation_icon@2x.png in Resources */,
 				6EE002C217FF75C800B804CD /* when_icon@2x.png in Resources */,
+				6E100D491814DC7300DEF6A2 /* google_square.png in Resources */,
 				6EE002B817FF75C800B804CD /* step_Icon@2x.png in Resources */,
 				6EE002C117FF75C800B804CD /* when_icon.png in Resources */,
 				6E171B9E18029CF9005926DF /* journal_icon.png in Resources */,
@@ -848,8 +922,11 @@
 				6EE002BF17FF75C800B804CD /* thrivestreamsnavclear.png in Resources */,
 				6EE002BE17FF75C800B804CD /* thrivestreamsnav@2x.png in Resources */,
 				6EE002BA17FF75C800B804CD /* step_icon_gray@2x.png in Resources */,
+				6E100D481814DC7300DEF6A2 /* Foursquare.png in Resources */,
 				6E6DA73817FEA650001E9D66 /* InfoPlist.strings in Resources */,
 				6E171BC11802B489005926DF /* OpenSans-SemiboldItalic.ttf in Resources */,
+				6E100D4B1814DC7300DEF6A2 /* reddit.png in Resources */,
+				6E100D451814DC7300DEF6A2 /* digg.png in Resources */,
 				6EE002B417FF75C800B804CD /* repeat_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -871,10 +948,14 @@
 			files = (
 				6ED72A471801017A003B5ED5 /* Goal.m in Sources */,
 				6E6DA73E17FEA650001E9D66 /* AppDelegate.m in Sources */,
+				6E605F16180BCC6500FE62D6 /* LinksView.m in Sources */,
 				6EE0034817FF827500B804CD /* UIImage+ImageEffects.m in Sources */,
 				6EE0035117FFB4E300B804CD /* FundamentalGoalCell.m in Sources */,
 				6EE0033717FF812200B804CD /* FlatUIHelper.m in Sources */,
+				6E605F0C180BC89300FE62D6 /* GoalViewController.m in Sources */,
+				6E605F13180BCC4700FE62D6 /* ToolsView.m in Sources */,
 				6ED72A441801017A003B5ED5 /* User.m in Sources */,
+				6E605F10180BCBED00FE62D6 /* WhyView.m in Sources */,
 				6EE0032A17FF7F1000B804CD /* ThriveStreamsModel.xcdatamodeld in Sources */,
 				6E6DA73A17FEA650001E9D66 /* main.m in Sources */,
 				6EE0033117FF808A00B804CD /* UserSingleton.m in Sources */,
@@ -886,6 +967,7 @@
 				6EE0034B17FF913200B804CD /* MainViewController.m in Sources */,
 				6EE0034E17FF915A00B804CD /* SettingsViewController.m in Sources */,
 				6EE0033E17FF815E00B804CD /* ThriveButtonMenu.m in Sources */,
+				6E605F19180BCC8800FE62D6 /* StatsView.m in Sources */,
 				6EE002E817FF7B8B00B804CD /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

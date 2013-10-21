@@ -16,6 +16,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 
+@property (nonatomic, strong) IBOutlet UITextView* testLabel;
+@property (nonatomic, strong) IBOutlet UITextView* test2Label;
+
 - (IBAction)loginWithFacebook:(id)sender;
+
+@property (nonatomic, strong) IBOutlet UIButton *deployButton;
+- (IBAction)deployStuff:(id)sender;
 
 @end

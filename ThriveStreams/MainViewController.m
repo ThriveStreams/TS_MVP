@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 #import "UserSingleton.h"
 #import "FundamentalGoalCell.h"
+#import "GoalViewController.h"
 #import <Parse/Parse.h>
 #import "User.h"
 #import "Goal.h"
@@ -23,7 +24,7 @@
 
     NSArray *thriveItems;
     NSMutableString *fullname;
-    NSMutableArray *goalList;
+    NSDictionary *goalList;
 
     M13CheckboxState meditationState;
     M13CheckboxState journalState;
@@ -177,7 +178,7 @@
     self.navigationItem.titleView = logo;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"3dotButton.png"] style:UIBarStyleDefault target:self action:@selector(showOverlay)];
-
+    
     // hack to push navigation bar image
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)]];
     self.navigationItem.leftBarButtonItem.enabled = NO;
@@ -219,7 +220,15 @@
         {
             for (PFObject *userLogObj in objects)
             {
-                [self setCheckboxForGoalID:[userLogObj valueForKey:@"Goal"] isDone:YES];
+                NSDate *userLogDate = [userLogObj valueForKey:@"createdAt"];
+                NSDate *currentDate = [[NSDate date] dateByAddingTimeInterval:-60*60*24];
+                
+                
+                // it is still the same day
+                if ([userLogDate timeIntervalSinceDate:currentDate] > 0)
+                {
+                    [self setCheckboxForGoalID:[userLogObj valueForKey:@"Goal"] isDone:YES];
+                }
             }
             [_tableView reloadData];
         }
@@ -296,6 +305,27 @@
 
 }
 
+#pragma mark - Get Goal method
+- (PFObject *)getGoalData:(NSString *)goalId
+{
+    PFObject* goalObj;
+    NSArray *foundObjects;
+    PFQuery *query = [PFQuery queryWithClassName:@"Goal"];
+    [query whereKey:@"Goal" equalTo:goalId];
+    
+    foundObjects = [query findObjects];
+    
+    // there should only be one object found
+    if ([foundObjects count] == 1)
+    {
+        PFObject *goal = [foundObjects objectAtIndex:0];
+        goalObj = goal;
+    }
+    
+    return goalObj;
+}
+
+
 #pragma mark - Save Data methods
 - (void)saveGoalData:(NSString *)goalId checkState:(M13CheckboxState)checkState
 {
@@ -306,7 +336,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
-            // There should only be one result
+            // Only one so delete it
             if ([objects count] == 1)
             {
                 PFObject *userLogObj = [objects objectAtIndex:0];
@@ -322,11 +352,21 @@
                 [newUserLog saveInBackground];
                 NSLog(@"added new object!");
             }
-            
-            // There was more than one result. Something happened.
+
             else
             {
-                NSLog(@"Error: More than one result.");
+                // look for the goal that is within date range
+                for (PFObject *object in objects)
+                {
+                    NSDate *userLogDate = [object valueForKey:@"createdAt"];
+                    NSDate *currentDate = [[NSDate date] dateByAddingTimeInterval:-60*60*24];
+                    
+                    // it is still the same day, so remove this.
+                    if ([userLogDate timeIntervalSinceDate:currentDate] > 0)
+                    {
+                        [object deleteInBackground];
+                    }
+                }
             }
         }
         else
@@ -365,6 +405,73 @@
 }
 
 #pragma mark - UITableView Data Source delegates
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UIStoryboard *mystoryboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    GoalViewController *goalViewController = [mystoryboard instantiateViewControllerWithIdentifier:@"GoalViewController"];
+    
+    PFObject *goal;
+    
+    // Meditation row
+    if (indexPath.row == 0)
+    {
+        goal = [self getGoalData:@"h3AOIcsUkd"];
+        if (goal == nil)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        else
+        {
+            
+        }
+        [self presentViewController:goalViewController animated:YES completion:nil];
+    }
+    
+    // Journal row
+    else if (indexPath.row == 1)
+    {
+        goal = [self getGoalData:@"xj435NyIuW"];
+        if (goal == nil)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        
+        [self presentViewController:goalViewController animated:YES completion:nil];
+    }
+    
+    // Excercise row
+    else if (indexPath.row == 2)
+    {
+        goal = [self getGoalData:@"ZPHaJ8CjvS"];
+        if (goal == nil)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        
+        [self presentViewController:goalViewController animated:YES completion:nil];
+    }
+    
+    // Nutrition row
+    else if (indexPath.row == 3)
+    {
+        goal = [self getGoalData:@"SAeeSNsDWM"];
+        if (goal == nil)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+        
+        [self presentViewController:goalViewController animated:YES completion:nil];
+    }
+
+    
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -386,6 +493,8 @@
         cell.checkbox.checkState = meditationState;
         cell.thriveImage.image = meditationImage;
         cell.parseObjectID = @"h3AOIcsUkd";
+        cell.delegate = self;
+        
     }
     
     // Journal row
@@ -395,6 +504,7 @@
         cell.checkbox.checkState = journalState;
         cell.thriveImage.image = journalImage;
         cell.parseObjectID = @"xj435NyIuW";
+        cell.delegate = self;
     }
 
     // Excercise row
@@ -404,6 +514,7 @@
         cell.checkbox.checkState = exerciseState;
         cell.thriveImage.image = exerciseImage;
         cell.parseObjectID = @"ZPHaJ8CjvS";
+        cell.delegate = self;
     }
     
     // Nutrition row
@@ -413,9 +524,9 @@
         cell.checkbox.checkState = nutritionState;
         cell.thriveImage.image = nutritionImage;
         cell.parseObjectID = @"SAeeSNsDWM";
+        cell.delegate = self;
     }
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -477,18 +588,7 @@
         NSLog(@"logout successful");
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [appDelegate resetWindowToInitialView];
-        
-      /*  [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result)
-         {
-             //reset the view to initial
-             
-             NSLog(@"logout successful");
-             
-             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-             [appDelegate resetWindowToInitialView];
-         } onFailure:^(NSError *error){
-             NSLog(@"For some reason, couldn't log out. Here's the error: %@", error);
-         }]; */
+
     }
     else if ([buttonTitle isEqualToString:@"Settings"])
     {
@@ -499,6 +599,14 @@
         
     }
 }
+
+#pragma mark - FundamentalGoalCell Delegate
+
+-(void)fundamentalGoalCellAt:(FundamentalGoalCell *)sender
+{
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

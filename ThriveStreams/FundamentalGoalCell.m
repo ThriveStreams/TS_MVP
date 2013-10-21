@@ -18,6 +18,11 @@
 
 @implementation FundamentalGoalCell
 
+@synthesize delegate; //synthesise  MyClassDelegate delegate
+
+- (void) setDelegate:(id<FundamentalGoalCellDelegate>)delegate {
+    [self.delegate fundamentalGoalCellAt:self];
+}
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -37,7 +42,7 @@
         [self.contentView addSubview:_checkbox];
         [self.contentView addSubview:_thriveImage];
         
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [self setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     return self;
 }

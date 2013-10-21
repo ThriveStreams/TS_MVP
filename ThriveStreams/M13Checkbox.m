@@ -408,6 +408,6 @@
     [checkView setNeedsDisplay];
     [super cancelTrackingWithEvent:event];
 }
-*/
+ */
 @end
 
