@@ -1,6 +1,6 @@
 //
 //  LoginViewController.m
-//  ThriveStreams
+//  Uptimal
 //
 //  Created by Ryan Badilla on 10/4/13.
 //  Copyright (c) 2013 ThriveStreams. All rights reserved.
@@ -10,11 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FlatUIHelper.h"
 #import <Parse/Parse.h>
-#import "User.h"
 #import "AppDelegate.h"
+#import "MainViewController.h"
 #import "MBProgressHUD.h"
-#import "UserSingleton.h"
-
 
 @interface LoginViewController ()
 {
@@ -24,14 +22,6 @@
 @end
 
 @implementation LoginViewController
-/*
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize client = _client;
-
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-} */
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,7 +62,7 @@
       UITextAttributeTextShadowColor,
       [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
       UITextAttributeTextShadowOffset,
-      [UIFont fontWithName:@"OpenSans" size:0.0],
+      [UIFont fontWithName:@"OpenSans-Light" size:0.0],
       UITextAttributeFont,
       nil]];
     
@@ -84,12 +74,12 @@
     NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
                                              [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                             [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+                                             [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
                                              nil];
     NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                               [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                               [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                              [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+                                              [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
                                               nil];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
@@ -104,7 +94,7 @@
     NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
      [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-     [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+     [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
      nil];
     
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
@@ -118,7 +108,7 @@
     self.emailField.layer.cornerRadius = 3.0f;
     self.emailField.placeholder = @"Email Address";
     self.emailField.leftViewMode = UITextFieldViewModeAlways;
-    self.emailField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.emailField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.emailField.leftView = leftView1;
     self.emailField.delegate = self;
@@ -126,7 +116,7 @@
     self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     self.passwordField.layer.cornerRadius = 3.0f;
     self.passwordField.placeholder = @"Password";
-    self.passwordField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.passwordField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.passwordField.leftView = leftView2;
@@ -135,7 +125,7 @@
     // Configure the forgotbutton to look like normal text
     self.forgotButton.backgroundColor = [UIColor clearColor];
     [self.forgotButton setTitle:@"Forgot Your Details?" forState:UIControlStateNormal];
-    [self.forgotButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans" size:11.0f]];
+    [self.forgotButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Light" size:11.0f]];
     [self.forgotButton setTitleColor:greyColor forState:UIControlStateNormal];
     [self.forgotButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     
@@ -235,20 +225,39 @@
             }];
 }
 
-#pragma mark - UITextFieldDelegates
-
-
 // Cancel the current view
 - (IBAction)cancel:(id)sender
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - IBActions for forgotPassword
+
+-(IBAction)forgotPassword:(id)sender
+{
+    [self performSegueWithIdentifier:@"toMainSegueFromLogin" sender:self];
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - prepare for Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSString *firstname = [[PFUser currentUser] objectForKey:@"firstName"];
+    NSString *lastname = [[PFUser currentUser] objectForKey:@"lastName"];
+    PFFile *image = [[PFUser currentUser] objectForKey:@"profileImage"];
+    UIImage *profileImage = [UIImage imageWithData:[image getData]];
+    
+    UINavigationController *navigationController = segue.destinationViewController;
+    MainViewController *controller =(MainViewController *)navigationController.topViewController;
+    controller.firstname = firstname;
+    controller.lastname = lastname;
+    controller.profileImage = profileImage;
 }
 
 @end

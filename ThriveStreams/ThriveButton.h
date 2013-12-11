@@ -74,6 +74,7 @@ typedef NS_ENUM(NSInteger, Rotation) {
 -(BOOL)isInMoveToAreaCircle:(CGPoint)point;
 -(UIViewController *)returnViewController;
 - (CustomCode)returnBlockCode;
+-(void)setBlockCode:(CustomCode)code;
 - (void)executeBlockCode;
 -(void)reset;
 

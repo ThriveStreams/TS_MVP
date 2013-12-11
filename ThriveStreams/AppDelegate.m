@@ -12,9 +12,6 @@
 
 @implementation AppDelegate
 
-@synthesize client = _client;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize coreDataStore = _coreDataStore;
 
 /*
 - (NSManagedObjectModel *)managedObjectModel
@@ -60,7 +57,8 @@
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     [PFFacebookUtils initializeFacebook];
-    
+    [PFTwitterUtils initializeWithConsumerKey:@"FBF2Y47ih4FwO1gapzI2qg" consumerSecret:@"hxa7ijAmQH8ZOMWnOT8k7QK9PnbuTdQhDmRVspj34M"];
+
     [TestFlight takeOff:@"e327df57-ff21-4bdf-8732-deac5352b1ef"];
     
     return YES;

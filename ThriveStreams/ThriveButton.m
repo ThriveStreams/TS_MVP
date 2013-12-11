@@ -71,29 +71,11 @@
         
         //default rotation is clockwise
         _rotationDirection = clockwise;
-        
-        //add gesture recognizer
-  /*      UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-        tapGesture.delegate = self;
-        [self addGestureRecognizer:tapGesture]; */
+        _customCode = ^{ };
     
-        
     }
     return self;
 }
-/*
-- (id)initAsSubButtonWithFrame:(CGRect)frame iconImage:(UIImage *)image borderColor:(UIColor *)border fillColor:(UIColor *)fill
-{
-    if (self = [self initAsMainButtonWithFrame:frame iconImage:image subIconImage:nil borderColor:border fillColor:fill])
-    {
-        _type = ThriveButtonSub;
-        _rotationDirection = counterclockwise;
-        self.hidden = YES;
-        self.alpha = 0.0;
-        _viewController = nil;
-    }
-    return self;
-} */
 
 - (id)initAsSubButtonWithFrame:(CGRect)frame iconImage:(UIImage *)image borderColor:(UIColor *)border fillColor:(UIColor *)fill withView:(UIViewController *)viewController
 {
@@ -411,7 +393,12 @@
     _state = ThriveButtonStateDisengaged;
 }
 
-#pragma mark - returnBlockCode
+#pragma mark - blockCode
+
+-(void)setBlockCode:(CustomCode)code
+{
+    _customCode = code;
+}
 
 - (CustomCode)returnBlockCode
 {

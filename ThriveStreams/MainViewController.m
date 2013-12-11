@@ -1,6 +1,6 @@
 //
 //  MainViewController.m
-//  ThriveStreams
+//  Uptimal
 //
 //  Created by Ryan Badilla on 10/4/13.
 //  Copyright (c) 2013 ThriveStreams. All rights reserved.
@@ -8,28 +8,28 @@
 
 #import "MainViewController.h"
 #import "FlatUIHelper.h"
-#import "AppDelegate.h"
 #import "ThriveButton.h"
 #import "ThriveButtonMenu.h"
 #import "MBProgressHUD.h"
-#import "UserSingleton.h"
-#import "FundamentalGoalCell.h"
 #import "GoalViewController.h"
 #import <Parse/Parse.h>
-#import "User.h"
-#import "Goal.h"
+#import "AppDelegate.h"
+#import "ArrowView.h"
+#import "GoalListViewController.h"
+#import "UserGoalViewController.h"
+#import "SettingsViewController.h"
 
 @interface MainViewController ()
 {
-
-    NSArray *thriveItems;
     NSMutableString *fullname;
-    NSDictionary *goalList;
-
-    M13CheckboxState meditationState;
-    M13CheckboxState journalState;
-    M13CheckboxState exerciseState;
-    M13CheckboxState nutritionState;
+    
+    NSMutableArray *_goalArray;
+    NSMutableArray *_accomplishedGoalsArray;
+    
+    NSArray *_tableSections;
+    
+    
+    ThriveButtonMenu *thriveMenu;
     
     UIImage *meditationImage;
     UIImage *journalImage;
@@ -40,13 +40,9 @@
 
 @implementation MainViewController
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize client = _client;
-
 - (AppDelegate *)appDelegate {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,98 +57,52 @@
 {
     [super viewDidLoad];
 
-    //initialize images with defaults
-    meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
-    journalImage = [UIImage imageNamed:@"JournalIcon.png"];
-    exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
-    nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
+    _userImage.image = _profileImage;
+
+    // setup table sections
+    _tableSections = [[NSArray alloc] initWithObjects:@"Goals", @"Accomplished", nil];
     
+    // populate user labels
+    _nameLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:16.0];
+    _nameLabel.text = [NSString stringWithFormat:@"%@ %@", _firstname, _lastname];
+    _stepsLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:12.0];
+    _stepsLabel.text = @"0 Steps Taken";
+    _followersLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:12.0];
+    _followersLabel.text = @"0 Followers";
     
-    UIColor *meditationColor = [UIColor colorWithRed:155.0/255.0 green:89.0/255.0 blue:182.0/255.0 alpha:1.0f];
-    UIColor *journalColor = [UIColor colorWithRed:241.0/255.0 green:196.0/255.0 blue:15.0/255.0 alpha:1.0f];
-    UIColor *exerciseColor = [UIColor colorWithRed:46.0/255.0 green:204.0/255.0 blue:113.0/255.0 alpha:1.0f];
-    UIColor *nutritionColor = [UIColor colorWithRed:230.0/255.0 green:126.0/255.0 blue:34.0/255.0 alpha:1.0f];
-    
-    //set up stackmob
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
-    self.client = [SMClient defaultClient];
-    
+    UIColor *addGoalColor = [UIColor colorWithRed:46.0/255.0 green:204.0/255.0 blue:113.0/255.0 alpha:1.0f];
+    UIColor *photoColor = [UIColor colorWithRed:52.0/255.0 green:152.0/255.0 blue:219.0/255.0 alpha:1.0f];
+    UIColor *editColor = [UIColor colorWithRed:241.0/255.0 green:196.0/255.0 blue:15.0/255.0 alpha:1.0f];
+ 
     // set up background color
     [self.view setBackgroundColor:[UIColor colorWithRed:236.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1.0]];
     
     ThriveButton *mainThriveButton = [[ThriveButton alloc]
                                       initAsMainButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT
-                                      iconImage:[UIImage imageNamed:@"thriveButtonIcon.png"]
+                                      iconImage:[UIImage imageNamed:@"uptimalBanner.png"]
                                       subIconImage:[UIImage imageNamed:@"Xbutton.png"]
                                       borderColor: BUTTON_THRIVE_BORDER
                                       fillColor:BUTTON_THRIVE_FILL];
 
-    ThriveButton *meditationButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"meditation_icon.png"] borderColor:meditationColor fillColor:meditationColor withBlock:^{
-        if (meditationState == M13CheckboxStateUnchecked)
-        {
-            meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            meditationState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
-            meditationState = M13CheckboxStateUnchecked;
-        }
-        [self saveGoalData:@"h3AOIcsUkd" checkState:meditationState];
+    ThriveButton *addButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"addGoal.png"] borderColor:addGoalColor fillColor:addGoalColor withBlock:^{
         
-        [_tableView reloadData];
-    }];
-    
-    ThriveButton *journalButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"journal_icon.png"] borderColor:journalColor fillColor:journalColor withBlock:^{
-        if (journalState == M13CheckboxStateUnchecked)
-        {
-            journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            journalState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            journalImage = [UIImage imageNamed:@"JournalIcon.png"];
-            journalState = M13CheckboxStateUnchecked;
-        }
-        
-        [self saveGoalData:@"xj435NyIuW" checkState:journalState];
-        
-        [_tableView reloadData];
-    }];
-    
-    ThriveButton *exerciseButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"exercise_icon.png"] borderColor:exerciseColor fillColor:exerciseColor withBlock:^{
-        if (exerciseState == M13CheckboxStateUnchecked)
-        {
-            exerciseState = M13CheckboxStateChecked;
-            exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
-        }
-        else
-        {
-            exerciseState = M13CheckboxStateUnchecked;
-            exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
-        }
-        [self saveGoalData:@"ZPHaJ8CjvS" checkState:journalState];
+        [self performSegueWithIdentifier:@"AddGoalSegue" sender: self];
 
-        [_tableView reloadData];
     }];
     
-    ThriveButton *nutritionButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"nutrition_icon.png"] borderColor:nutritionColor fillColor:nutritionColor withBlock:^{
-        if (nutritionState == M13CheckboxStateUnchecked)
-        {
-            nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            nutritionState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
-            nutritionState = M13CheckboxStateUnchecked;
-        }
-        [self saveGoalData:@"SAeeSNsDWM" checkState:nutritionState];
-    
-        [_tableView reloadData];
+    ThriveButton *photoButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"camera.png"] borderColor:photoColor fillColor:photoColor withBlock:^{
+
     }];
     
-    ThriveButtonMenu *menu = [[ThriveButtonMenu alloc] initWithFrame:THRIVEMENU_DEFAULT_SUPERVIEW_CGRECT parent:self mainButton:mainThriveButton subButtons:meditationButton, journalButton, exerciseButton, nutritionButton, nil];
+    ThriveButton *editButton = [[ThriveButton alloc] initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT iconImage:[UIImage imageNamed:@"pencil.png"] borderColor:editColor fillColor:editColor withBlock:^{
+
+    }];
+
+    
+    ThriveButtonMenu *menu = [[ThriveButtonMenu alloc] initWithFrame:THRIVEMENU_DEFAULT_SUPERVIEW_CGRECT parent:self mainButton:mainThriveButton subButtons:addButton, photoButton, editButton, nil];
+    
+    // store a pointer to the menu
+    thriveMenu = menu;
     
     [self.view addSubview:menu];
     //
@@ -164,18 +114,14 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [UIView new];
-    [_tableView registerClass:[FundamentalGoalCell class] forCellReuseIdentifier:@"MyCellIdentifier"];
-    
-    
-    // setup items for table view
-    thriveItems = @[@"Meditation", @"Journal", @"Excercise", @"Nutrition"];
     
     // set up navigationbar
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithWhite:0.6 alpha:0.9]];
-    UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 260, 20)];
+ /*   UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 260, 20)];
     [logo setImage:[UIImage imageNamed:@"TS_Logo_BPLAN2.png"]];
     [logo setContentMode:UIViewContentModeScaleAspectFit];
-    self.navigationItem.titleView = logo;
+    self.navigationItem.titleView = logo; */
+    self.navigationItem.title = @"Uptimal";
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"3dotButton.png"] style:UIBarStyleDefault target:self action:@selector(showOverlay)];
     
@@ -183,126 +129,171 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)]];
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
-   // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@". . ." style:UIBarButtonItemStylePlain target:self action:@selector(showOverlay)];
     
     [self populateGoals];
-  //  [self addDefaultGoals:[PFUser currentUser]];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"viewWillAppear called");
+    [self populateGoals];
+    [_tableView reloadData];
+
+}
+
+- (void)displayIntroOverlay
+{
+    // hide the thrive menu
+    [thriveMenu setHidden:YES];
+    
+    // initialize overlay view
+    UIView *overlayView = [[UIView alloc] initWithFrame:self.view.frame];
+    [overlayView setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    
+    // setup Label
+    __block BOOL didTap = NO;
+    UILabel *tapLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 245, 280, 28)];
+    [tapLabel setTextAlignment:NSTextAlignmentCenter];
+    [tapLabel setTextColor:[UIColor colorWithWhite:1.0 alpha:1.0]];
+    [tapLabel setFont:[UIFont fontWithName:@"OpenSans-Light" size:14.0]];
+    [tapLabel setText:@"Tap to Uptimize"];
+    [overlayView addSubview:tapLabel];
+    
+    UILabel *addGoalLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 245, 280, 28)];
+    [addGoalLabel setTextAlignment:NSTextAlignmentCenter];
+    [addGoalLabel setTextColor:[UIColor colorWithWhite:1.0 alpha:1.0]];
+    [addGoalLabel setFont:[UIFont fontWithName:@"OpenSans-Light" size:14.0]];
+    [addGoalLabel setText:@"Tap to Add Goal"];
+    [overlayView addSubview:addGoalLabel];
+    [addGoalLabel setAlpha:0.0];
+    
+    //setup Arrow
+    ArrowView *arrow = [[ArrowView alloc] initWithFrame:
+                        CGRectMake((self.view.frame.size.width / 2) - 10,
+                                   280, 20, 200)];
+    [overlayView addSubview:arrow];
+    
+    
+    // initialize ThriveButton
+    ThriveButton *mainThriveButton = [[ThriveButton alloc]
+                                      initAsMainButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT
+                                      iconImage:[UIImage imageNamed:@"uptimalBanner.png"]
+                                      subIconImage:[UIImage imageNamed:@"Xbutton.png"]
+                                      borderColor: BUTTON_THRIVE_BORDER
+                                      fillColor:BUTTON_THRIVE_FILL];
+    [mainThriveButton setBlockCode:^{
+        didTap = !didTap;
+        
+        if (didTap)
+        {
+            [UIView animateWithDuration:0.4
+                                  delay:0.0
+                                options:UIViewAnimationOptionTransitionCrossDissolve
+                             animations:^{
+                                 tapLabel.alpha = 0.0;
+                                 addGoalLabel.alpha = 1.0;
+                                 arrow.frame = CGRectMake(arrow.frame.origin.x, arrow.frame.origin.y,
+                                        arrow.frame.size.width, arrow.frame.size.height - 75.0);
+                             }
+                             completion:nil];
+        }
+        else
+        {
+            [UIView animateWithDuration:0.4
+                                  delay:0.0
+                                options:UIViewAnimationOptionTransitionCrossDissolve
+                             animations:^{
+                                 tapLabel.alpha = 1.0;
+                                 addGoalLabel.alpha = 0.0;
+                                 arrow.frame = CGRectMake(arrow.frame.origin.x, arrow.frame.origin.y,
+                                                          arrow.frame.size.width, arrow.frame.size.height + 75.0);
+                             }
+                             completion:nil];
+        }
+    }];
+
+    ThriveButton *goalButton = [[ThriveButton alloc]
+                                initAsSubButtonWithFrame:THRIVE_BUTTON_RECT_DEFAULT
+                                iconImage:[UIImage imageNamed:@"addGoal.png"]
+                                borderColor:[UIColor colorWithRed:46.0/255.0 green:204.0/255.0 blue:113.0/255.0 alpha:1.0f]
+                                fillColor:[UIColor colorWithRed:46.0/255.0 green:204.0/255.0 blue:113.0/255.0 alpha:1.0f]
+                                withBlock:^{
+                                    didTap = !didTap;
+                                    if (didTap)
+                                    {
+                                        [UIView animateWithDuration:0.4
+                                                              delay:0.0
+                                                            options:UIViewAnimationOptionTransitionCrossDissolve
+                                                         animations:^{
+                                                             tapLabel.alpha = 0.0;
+                                                             addGoalLabel.alpha = 1.0;
+                                                             arrow.frame = CGRectMake(arrow.frame.origin.x, arrow.frame.origin.y,
+                                                                    arrow.frame.size.width, arrow.frame.size.height - 75.0);
+                                                         }
+                                                         completion:nil];
+                                    }
+                                    else
+                                    {
+                                        [UIView animateWithDuration:0.4
+                                                              delay:0.0
+                                                            options:UIViewAnimationOptionTransitionCrossDissolve
+                                                         animations:^{
+                                                             tapLabel.alpha = 1.0;
+                                                             addGoalLabel.alpha = 0.0;
+                                                             arrow.frame = CGRectMake(arrow.frame.origin.x, arrow.frame.origin.y,
+                                                                arrow.frame.size.width, arrow.frame.size.height + 75.0);
+                                                         }
+                                                         completion:nil];
+                                    }
+                                    
+                                    [self performSegueWithIdentifier:@"AddGoalSegue" sender:self];
+
+                                }];
+    
+    ThriveButtonMenu *introMenu = [[ThriveButtonMenu alloc] initWithFrame:THRIVEMENU_DEFAULT_SUPERVIEW_CGRECT parent:self mainButton:mainThriveButton subButtons:goalButton, nil];
+    
+    
+    [overlayView addSubview:introMenu];
+    
+    [self.view addSubview:overlayView];
+    
 }
 
 #pragma mark - Populate goals
 - (void)populateGoals
 {
-    NSArray *goalArray = PFUser.currentUser[@"ThriveStreams"];
-    NSMutableArray *goalIDArray = [[NSMutableArray alloc] initWithCapacity:[goalArray count]];
+
+    NSArray *userGoalsArray = PFUser.currentUser[@"Goals"];
     
-    //user has no goals set, so add the default
-    if ([goalArray count] == 0)
+    // initialize goalArray and accomplishedGoalArray
+    _goalArray = [[NSMutableArray alloc] initWithCapacity:[userGoalsArray count]];
+    _accomplishedGoalsArray = [[NSMutableArray alloc] initWithCapacity:[userGoalsArray count]];
+    
+    //user has no goals set, so set up intro
+    if ([userGoalsArray count] == 0)
     {
-        [self addDefaultGoals:[PFUser currentUser]];
+        [self displayIntroOverlay];
     }
     
-    // copy the goal IDs
-    for (PFObject *goal in goalArray)
+    else
     {
-        [goalIDArray addObject:[goal objectId]];
-    }
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"UserLog"];
-    [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
-    [query whereKey:@"Goal" containedIn:goalIDArray];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Getting your goals...";
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error)
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = @"Getting your goals...";
+        
+        NSArray *userGoals = PFUser.currentUser[@"Goals"];
+        for (PFObject *userGoal in userGoals)
         {
-            for (PFObject *userLogObj in objects)
-            {
-                NSDate *userLogDate = [userLogObj valueForKey:@"createdAt"];
-                NSDate *currentDate = [[NSDate date] dateByAddingTimeInterval:-60*60*24];
-                
-                
-                // it is still the same day
-                if ([userLogDate timeIntervalSinceDate:currentDate] > 0)
-                {
-                    [self setCheckboxForGoalID:[userLogObj valueForKey:@"Goal"] isDone:YES];
-                }
-            }
-            [_tableView reloadData];
-        }
-        else
-        {
-            NSLog(@"Error: %@", error);
+            [userGoal fetch];
+            if (userGoal[@"isComplete"] == [NSNumber numberWithBool:YES])
+                [_accomplishedGoalsArray addObject:userGoal];
+            else if (userGoal[@"isRemoved"] == [NSNumber numberWithBool:NO])
+                [_goalArray addObject:userGoal];
+            
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
-}
-
--(void)setCheckboxForGoalID:(NSString *)goalID isDone:(BOOL)done
-{
-    
-    // goal is meditation
-    if ([goalID isEqualToString:@"h3AOIcsUkd"])
-    {
-        if (done)
-        {
-            meditationImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            meditationState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            meditationImage = [UIImage imageNamed:@"MeditationIcon.png"];
-            meditationState = M13CheckboxStateUnchecked;
-        }
     }
-    
-    //goal is journal
-    else if ([goalID isEqualToString:@"xj435NyIuW"])
-    {
-        if (done)
-        {
-            journalImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            journalState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            journalImage = [UIImage imageNamed:@"JournalIcon.png"];
-            journalState = M13CheckboxStateUnchecked;
-        }
-    }
-    
-    // Goal is exercise
-    else if ([goalID isEqualToString:@"ZPHaJ8CjvS"])
-    {
-        if (done)
-        {
-            exerciseImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            exerciseState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            exerciseImage = [UIImage imageNamed:@"ExerciseIcon.png"];
-            exerciseState = M13CheckboxStateUnchecked;
-        }
-    }
-    
-    // goal is nutrition
-    else if ([goalID isEqualToString:@"SAeeSNsDWM"])
-    {
-        if (done)
-        {
-            nutritionImage = [UIImage imageNamed:@"CompletedIcon.png"];
-            nutritionState = M13CheckboxStateChecked;
-        }
-        else
-        {
-            nutritionImage = [UIImage imageNamed:@"NutritionIcon.png"];
-            nutritionState = M13CheckboxStateUnchecked;
-        }
-    }
-
 }
 
 #pragma mark - Get Goal method
@@ -325,215 +316,59 @@
     return goalObj;
 }
 
-
-#pragma mark - Save Data methods
-- (void)saveGoalData:(NSString *)goalId checkState:(M13CheckboxState)checkState
-{
-    PFQuery *query = [PFQuery queryWithClassName:@"UserLog"];
-    [query whereKey:@"UserID" equalTo:[[PFUser currentUser] objectId]];
-    [query whereKey:@"Goal" equalTo:goalId];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error)
-        {
-            // Only one so delete it
-            if ([objects count] == 1)
-            {
-                PFObject *userLogObj = [objects objectAtIndex:0];
-                [userLogObj deleteInBackground];
-            }
-            // No objects. Therefore, not set
-            else if ([objects count] == 0)
-            {
-                PFObject *newUserLog = [PFObject objectWithClassName:@"UserLog"];
-                [newUserLog setObject:@"Step Completed" forKey:@"Event"];
-                [newUserLog setObject:goalId forKey:@"Goal"];
-                [newUserLog setObject:[[PFUser currentUser] objectId] forKey:@"UserID"];
-                [newUserLog saveInBackground];
-                NSLog(@"added new object!");
-            }
-
-            else
-            {
-                // look for the goal that is within date range
-                for (PFObject *object in objects)
-                {
-                    NSDate *userLogDate = [object valueForKey:@"createdAt"];
-                    NSDate *currentDate = [[NSDate date] dateByAddingTimeInterval:-60*60*24];
-                    
-                    // it is still the same day, so remove this.
-                    if ([userLogDate timeIntervalSinceDate:currentDate] > 0)
-                    {
-                        [object deleteInBackground];
-                    }
-                }
-            }
-        }
-        else
-        {
-            NSLog(@"Error: %@", error);
-        }
-    }];
-}
-
-- (void)addDefaultGoals:(PFUser *)user
-{
-    NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
-    NSArray *fundamentals = [NSArray arrayWithObjects: @"SAeeSNsDWM", @"ZPHaJ8CjvS", @"xj435NyIuW", @"h3AOIcsUkd", nil];
-    
-    PFQuery *fundamentalsQuery = [PFQuery queryWithClassName:@"Goal"];
-    [fundamentalsQuery whereKey:@"objectId" containedIn:fundamentals];
-    
-    [fundamentalsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d objects", objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects) {
-                NSLog(@"%@", object.objectId);
-                [objectArray addObject:object];
-            }
-            NSLog(@"objectArray count: %d", [objectArray count]);
-            [user addObjectsFromArray:objectArray forKey:@"ThriveStreams"];
-            [user saveInBackground];
-            
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];
-}
-
 #pragma mark - UITableView Data Source delegates
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UIStoryboard *mystoryboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-    GoalViewController *goalViewController = [mystoryboard instantiateViewControllerWithIdentifier:@"GoalViewController"];
     
-    PFObject *goal;
-    
-    // Meditation row
-    if (indexPath.row == 0)
-    {
-        goal = [self getGoalData:@"h3AOIcsUkd"];
-        if (goal == nil)
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        else
-        {
-            
-        }
-        [self presentViewController:goalViewController animated:YES completion:nil];
-    }
-    
-    // Journal row
-    else if (indexPath.row == 1)
-    {
-        goal = [self getGoalData:@"xj435NyIuW"];
-        if (goal == nil)
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        
-        [self presentViewController:goalViewController animated:YES completion:nil];
-    }
-    
-    // Excercise row
-    else if (indexPath.row == 2)
-    {
-        goal = [self getGoalData:@"ZPHaJ8CjvS"];
-        if (goal == nil)
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        
-        [self presentViewController:goalViewController animated:YES completion:nil];
-    }
-    
-    // Nutrition row
-    else if (indexPath.row == 3)
-    {
-        goal = [self getGoalData:@"SAeeSNsDWM"];
-        if (goal == nil)
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh" message:@"The goal could not be found in the server/not connected to internet." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-        
-        [self presentViewController:goalViewController animated:YES completion:nil];
-    }
-
+    if (indexPath.section == 0)
+        [self performSegueWithIdentifier: @"userGoalSegue" sender: [_goalArray objectAtIndex:indexPath.row]];
     
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return [_tableSections count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [thriveItems count];
+    if (section == 0)
+    {
+        return [_goalArray count];
+    }
+    else
+    {
+        return [_accomplishedGoalsArray count];
+    }
 }
 
--(void)configureCell:(FundamentalGoalCell *)cell atIndexPath:(NSIndexPath *)indexPath
+-(UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    // Meditation row
-    if (indexPath.row == 0)
-    {
-        cell.goalLabel.text = @"Meditation";
-        cell.checkbox.checkState = meditationState;
-        cell.thriveImage.image = meditationImage;
-        cell.parseObjectID = @"h3AOIcsUkd";
-        cell.delegate = self;
-        
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     
-    // Journal row
-    else if (indexPath.row == 1)
-    {
-        cell.goalLabel.text = @"Journal";
-        cell.checkbox.checkState = journalState;
-        cell.thriveImage.image = journalImage;
-        cell.parseObjectID = @"xj435NyIuW";
-        cell.delegate = self;
-    }
-
-    // Excercise row
-    else if (indexPath.row == 2)
-    {
-        cell.goalLabel.text = @"Exercise";
-        cell.checkbox.checkState = exerciseState;
-        cell.thriveImage.image = exerciseImage;
-        cell.parseObjectID = @"ZPHaJ8CjvS";
-        cell.delegate = self;
-    }
+    PFObject *goal;
     
-    // Nutrition row
-    else if (indexPath.row == 3)
-    {
-        cell.goalLabel.text = @"Nutrition";
-        cell.checkbox.checkState = nutritionState;
-        cell.thriveImage.image = nutritionImage;
-        cell.parseObjectID = @"SAeeSNsDWM";
-        cell.delegate = self;
-    }
+    if (indexPath.section == 0)
+        goal = [_goalArray objectAtIndex:indexPath.row];
+    else
+        goal = [_accomplishedGoalsArray objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [goal objectForKey:@"GoalDescription"];
+    cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:16.0];
+    return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FundamentalGoalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyCellIdentifier"];
-    
-    [self configureCell:(FundamentalGoalCell *)cell atIndexPath:indexPath];
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    [self configureCell:cell atIndexPath:indexPath];
+    cell = [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -545,6 +380,24 @@
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 18)];
+    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7, 10, 10)];
+    [arrow setContentMode:UIViewContentModeScaleAspectFit];
+    [arrow setImage:[UIImage imageNamed:@"white_>.png"]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, 2, tableView.frame.size.width, 18)];
+    [label setFont:[UIFont fontWithName:@"OpenSans-Bold" size:12.0]];
+    [label setTextColor:[UIColor colorWithWhite:1.0 alpha:1.0]];
+    NSString *string =[_tableSections objectAtIndex:section];
+    [label setText:string];
+    [view addSubview:label];
+    [view addSubview:arrow];
+    [view setBackgroundColor:[UIColor colorWithRed:189/255.0 green:195/255.0 blue:199/255.0 alpha:1.0]];
+    return view;
+    
 }
 
 #pragma mark - actionsheet delegates
@@ -572,7 +425,7 @@
     for (UIView *subview in actionSheet.subviews) {
         if ([subview isKindOfClass:[UIButton class]]) {
             UIButton *button = (UIButton *)subview;
-            button.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0f];
+            button.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:16.0f];
         }
     }
 }
@@ -600,13 +453,107 @@
     }
 }
 
-#pragma mark - FundamentalGoalCell Delegate
-
--(void)fundamentalGoalCellAt:(FundamentalGoalCell *)sender
-{
+#pragma mark - Image profile 
+/*
+- (IBAction)selectPhoto:(id)sender {
+    NSLog(@"tapped");
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
     
 }
 
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+     [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+} */
+
+
+
+#pragma mark - prepareforsegue
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"AddGoalSegue"])
+    {
+        NSMutableArray *goalArray = [[NSMutableArray alloc] initWithCapacity:100];
+        
+        // pull data from parse
+        PFQuery *query = [PFQuery queryWithClassName:@"Goal"];
+        [query whereKeyExists:@"Category"];
+        [query whereKeyDoesNotExist:@"RootGoalID"];
+        NSArray * foundObjects = [query findObjects];
+        
+        [_activityIndicator startAnimating];
+        [query findObjects];
+        
+        for (PFObject *object in foundObjects)
+        {
+            NSString *categoryName = [object objectForKey:@"Category"];
+            if (![goalArray containsObject:categoryName])
+                    [goalArray addObject:categoryName];
+        }
+            
+        UINavigationController *navigationController = segue.destinationViewController;
+        GoalListViewController *controller = (GoalListViewController *)navigationController.topViewController;
+        controller.goalArray = goalArray;
+        
+        [_activityIndicator stopAnimating];
+    }
+    else if ([segue.identifier isEqualToString:@"userGoalSegue"])
+    {
+        UINavigationController *navigationController = segue.destinationViewController;
+        UserGoalViewController *controller= (UserGoalViewController *)navigationController.topViewController;
+        
+        PFObject *goal = sender;
+        NSMutableArray *stepsArray = [[NSMutableArray alloc] initWithCapacity:100];
+        
+        // get the creator
+        NSString *createdBy = [goal objectForKey:@"createdBy"];
+        PFQuery *query = [PFUser query];
+        PFUser *creator = (PFUser *)[query getObjectWithId:createdBy];
+        
+        // get the steps
+        stepsArray = [self getSteps:stepsArray currentStep:sender];
+        
+        // send data to view controller
+        controller.goalObject = goal;
+        controller.stepsArray = stepsArray;
+        controller.createdByUser = creator;
+
+    }
+}
+
+-(NSMutableArray *)getSteps:(NSMutableArray *)array currentStep:(PFObject *)currentStep
+{
+    
+    PFObject * nextStep = [currentStep objectForKey:@"nextStep"];
+    [nextStep fetchIfNeeded];
+    
+    if (nextStep != nil)
+    {
+        [array addObject:nextStep];
+        return [self getSteps:array currentStep:nextStep];
+    }
+    
+    return array;
+    
+}
+
+- (IBAction)tapEditButton:(id)sender
+{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    SettingsViewController *viewController = (SettingsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    [self presentViewController:viewController animated:YES completion:nil];
+
+}
 
 - (void)didReceiveMemoryWarning
 {

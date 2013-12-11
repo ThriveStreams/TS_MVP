@@ -161,6 +161,7 @@
             [btn handleTapGestureSubButton:gesture];
         } */
         [self doAnimation:gesture];
+        [_mainButton executeBlockCode];
     }
     for(int index = 0; index < [_subButtons count]; index++)
     {
@@ -216,9 +217,9 @@
         ThriveButton *btn2 = [_subButtons objectAtIndex:1];
         ThriveButton *btn3 = [_subButtons objectAtIndex:2];
             
-        CGPoint point1 = CGPointMake(btn1.frame.origin.x - 75.0, btn1.frame.origin.y - 55.0);
+        CGPoint point1 = CGPointMake(btn1.frame.origin.x - 75.0, btn1.frame.origin.y - 25.0);
         CGPoint point2 = CGPointMake(btn2.frame.origin.x, btn2.frame.origin.y - 75.0);
-        CGPoint point3 = CGPointMake(btn3.frame.origin.x + 75.0, btn3.frame.origin.y - 55.0);
+        CGPoint point3 = CGPointMake(btn3.frame.origin.x + 75.0, btn3.frame.origin.y - 25.0);
             
         [btn1 setMoveToPosition:point1];
         [btn2 setMoveToPosition:point2];

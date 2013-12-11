@@ -1,5 +1,5 @@
 //
-//  SplashViewController.h
+//  WelcomeViewController.h
 //  ThriveStreams
 //
 //  Created by Ryan Badilla on 10/4/13.
@@ -8,20 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WelcomeViewController : UIViewController
+@interface WelcomeViewController : UIViewController <NSURLConnectionDataDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicatorFacebook;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicatorTwitter;
 
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *twitterButton;
 
-@property (nonatomic, strong) IBOutlet UITextView* testLabel;
-@property (nonatomic, strong) IBOutlet UITextView* test2Label;
+@property (weak, nonatomic) IBOutlet UILabel *steps;
+
+@property (nonatomic, strong) NSMutableData *mutableData;
 
 - (IBAction)loginWithFacebook:(id)sender;
-
-@property (nonatomic, strong) IBOutlet UIButton *deployButton;
-- (IBAction)deployStuff:(id)sender;
+- (IBAction)loginWithTwitter:(id)sender;
 
 @end

@@ -11,17 +11,11 @@
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
-@class SMClient;
-@class SMCoreDataStore;
-@class RegisterViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIStoryboard * initialStoryboard;
 
-@property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (strong, nonatomic) SMCoreDataStore *coreDataStore;
-@property (strong, nonatomic) SMClient *client;
 @property (strong, nonatomic) UIWindow *window;
 
 

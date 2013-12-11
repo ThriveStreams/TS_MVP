@@ -1,6 +1,6 @@
 //
 //  JoinViewController.m
-//  ThriveStreams
+//  Uptimal
 //
 //  Created by Ryan Badilla on 10/4/13.
 //  Copyright (c) 2013 ThriveStreams. All rights reserved.
@@ -11,10 +11,8 @@
 #import "AppDelegate.h"
 #import "FlatUIHelper.h"
 #import <Parse/Parse.h>
-#import "User.h"
-#import "Goal.h"
-#import "UserSingleton.h"
 #import "MBProgressHUD.h"
+#import "MainViewController.h"
 
 @interface JoinViewController ()
 {
@@ -60,7 +58,7 @@
       UITextAttributeTextShadowColor,
       [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
       UITextAttributeTextShadowOffset,
-      [UIFont fontWithName:@"OpenSans" size:0.0],
+      [UIFont fontWithName:@"OpenSans-Light" size:0.0],
       UITextAttributeFont,
       nil]];
     
@@ -77,12 +75,12 @@
     NSDictionary* rightBarButtonDictionaryDisabled = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:0.3], UITextAttributeTextColor,
                                                       [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                                       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                                      [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+                                                      [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
                                                       nil];
     NSDictionary* rightBarButtonDictionaryNormal = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:133.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                                     [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                                     [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-                                                    [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+                                                    [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
                                                     nil];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryNormal forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:rightBarButtonDictionaryDisabled forState:UIControlStateDisabled];
@@ -100,7 +98,7 @@
     NSDictionary* leftBarButtonDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:1.0], UITextAttributeTextColor,
                                              [UIColor colorWithRed:149.0/255.0 green:165.0/255.0 blue:166.0/255.0 alpha:0.0], UITextAttributeTextShadowColor,
                                              [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-                                             [UIFont fontWithName:@"OpenSans" size:16.0], UITextAttributeFont,
+                                             [UIFont fontWithName:@"OpenSans-Light" size:16.0], UITextAttributeFont,
                                              nil];
     
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:leftBarButtonDictionary forState:UIControlStateNormal];
@@ -111,7 +109,7 @@
     self.policyTextView.backgroundColor = [UIColor clearColor];
     self.policyTextView.font = [UIFont italicSystemFontOfSize:11.0f];
     self.policyTextView.editable = NO;
-    self.policyTextView.text = @"By proceeding, you are agreeing to the ThriveStreams Terms of Service and Privacy Policy.";
+    self.policyTextView.text = @"By proceeding, you are agreeing to the Uptimal Terms of Service and Privacy Policy.";
     
     // set up the text fields
     self.firstNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -120,7 +118,7 @@
     self.firstNameField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.firstNameField.leftView = leftView1;
-    self.firstNameField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.firstNameField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     self.firstNameField.returnKeyType = UIReturnKeyNext;
     
     self.lastNameField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -129,7 +127,7 @@
     self.lastNameField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.lastNameField.leftView = leftView2;
-    self.lastNameField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.lastNameField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     self.lastNameField.returnKeyType = UIReturnKeyNext;
     
     self.emailField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -138,7 +136,7 @@
     self.emailField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.emailField.leftView = leftView3;
-    self.emailField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.emailField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     self.emailField.returnKeyType = UIReturnKeyNext;
     
     self.passwordField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -147,7 +145,7 @@
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     UIView* leftView4 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     self.passwordField.leftView = leftView4;
-    self.passwordField.font = [UIFont fontWithName:@"OpenSans" size:14.0f];
+    self.passwordField.font = [UIFont fontWithName:@"OpenSans-Light" size:14.0f];
     self.passwordField.returnKeyType = UIReturnKeyNext;
     
     //set up delegates
@@ -283,11 +281,13 @@
     user.password = _passwordField.text;
     user.email = _emailField.text;
     
-    // other fields can be set just like with PFObject
+    UIImage *imageFile = [UIImage imageNamed:@"default_profile_image.png"];
+    NSData *imageData = UIImageJPEGRepresentation(imageFile, 0.05f);
+    PFFile *image = [PFFile fileWithName:@"profile.png" data:imageData];
+    
+    user[@"profileImage"] = image;
     user[@"firstName"] = _firstNameField.text;
     user[@"lastName"] = _lastNameField.text;
-    
-    [self addDefaultGoals:user];
     
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
@@ -297,7 +297,6 @@
                                             block:^(PFUser *user, NSError *error) {
                                                 if (user) {
                                                     // Do stuff after successful login.
-                                                    [self addDefaultGoals:user];
                                                     [self performSegueWithIdentifier:@"toMainSegueFromJoin" sender:self];
                                                 } else {
                                                     // The login failed. Check error to see why.
@@ -316,32 +315,18 @@
     }];
 }
 
-- (void)addDefaultGoals:(PFUser *)user
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSMutableArray *objectArray = [[NSMutableArray alloc] initWithCapacity:4];
-    NSArray *fundamentals = [NSArray arrayWithObjects: @"SAeeSNsDWM", @"ZPHaJ8CjvS", @"xj435NyIuW", @"h3AOIcsUkd", nil];
-
-    PFQuery *fundamentalsQuery = [PFQuery queryWithClassName:@"Goal"];
-    [fundamentalsQuery whereKey:@"objectId" containedIn:fundamentals];
+    NSString *firstname = [[PFUser currentUser] objectForKey:@"firstName"];
+    NSString *lastname = [[PFUser currentUser] objectForKey:@"lastName"];
+    PFFile *image = [[PFUser currentUser] objectForKey:@"profileImage"];
+    UIImage *profileImage = [UIImage imageWithData:[image getData]];
     
-    [fundamentalsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d objects", objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects) {
-                NSLog(@"%@", object.objectId);
-                [objectArray addObject:object];
-            }
-            NSLog(@"objectArray count: %d", [objectArray count]);
-            [[PFUser currentUser] setObject:objectArray forKey:@"ThriveStreams"];
-            [[PFUser currentUser] saveInBackground];
-            
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];
+    UINavigationController *navigationController = segue.destinationViewController;
+    MainViewController *controller =(MainViewController *)navigationController.topViewController;
+    controller.firstname = firstname;
+    controller.lastname = lastname;
+    controller.profileImage = profileImage;
 }
 
 // Cancel the current view
